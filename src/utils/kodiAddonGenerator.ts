@@ -125,10 +125,12 @@ export async function createFullRepositoryReleaseBundleZipBlob(config: KodiAddon
   // 1. Generate repo zip
   const repoZipBlob = await createRepositoryZipBlob(config);
   bundleZip.file(`${repoId}/${repoId}-${config.version}.zip`, repoZipBlob);
+  bundleZip.file(`${repoId}-${config.version}.zip`, repoZipBlob);
 
   // 2. Generate plugin zip
   const pluginZipBlob = await createPluginZipBlob(config, dbItems);
   bundleZip.file(`${config.addonId}/${config.addonId}-${config.version}.zip`, pluginZipBlob);
+  bundleZip.file(`${config.addonId}-${config.version}.zip`, pluginZipBlob);
 
   // 3. Generate index.html
   bundleZip.file('index.html', generateIndexHtml(config));
