@@ -34,6 +34,34 @@ export const GithubGuideView: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Explanation for the 404 Screenshot Issue */}
+      <div className="bg-rose-950/40 border border-rose-500/40 rounded-3xl p-6 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-lg shrink-0">
+            404
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-rose-300">لماذا ظهرت لك صفحة (404 File not found) كما في الصورة التي أرفقتها؟</h3>
+            <p className="text-slate-300 text-xs sm:text-sm mt-0.5">
+              السبب أن منصة GitHub تشترط تفعيل ميزة <strong className="text-white">GitHub Pages</strong> بضغطة زر واحدة داخل إعدادات المستودع حتى ينطلق الرابط البسيط <code className="text-amber-300 bg-slate-950 px-1.5 py-0.5 rounded">dr-rasheed.github.io/amertv/ar.m3u</code> ويصبح شغالاً مثل رابط <code className="text-emerald-400 bg-slate-950 px-1.5 py-0.5 rounded">iptv-org</code> تماماً!
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3 text-xs">
+          <p className="font-bold text-amber-300">طريقة تفعيل الرابط البسيط في GitHub خلال 10 ثوانٍ فقط:</p>
+          <ol className="list-decimal list-inside space-y-2 text-slate-300 leading-relaxed pr-2">
+            <li>افتح مستودعك <code className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">amertv</code> على موقع GitHub.</li>
+            <li>اضغط على تبويب <strong className="text-white">Settings (الإعدادات)</strong> الموجود أعلى الصفحة على اليمين/اليسار.</li>
+            <li>من القائمة الجانبية اختر <strong className="text-white">Pages</strong>.</li>
+            <li>في قسم <strong className="text-white">Build and deployment -&gt; Branch</strong>: غيّر الاختيار من None إلى <strong className="text-emerald-400">main</strong> ثم اضغط <strong className="text-emerald-400">Save</strong>.</li>
+          </ol>
+          <p className="text-emerald-400 font-semibold pt-1">
+            ✨ فور الضغط على Save، سيعمل الرابط البسيط <code className="bg-slate-900 px-2 py-0.5 rounded">https://dr-rasheed.github.io/amertv/ar.m3u</code> فوراً وبأعلى سرعة في كودي وفي متصفحك!
+          </p>
+        </div>
+      </div>
+
       {/* GitHub Header Banner */}
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8">
         <div className="flex items-center gap-4 mb-4">
