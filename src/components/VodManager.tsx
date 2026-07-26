@@ -320,7 +320,7 @@ export const VodManager: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Generate & Download Repository ZIP (repository.amertv-1.0.0.zip)
+  // Generate & Download Repository ZIP
   const handleDownloadRepoZip = async () => {
     try {
       setIsGeneratingZip(true);
@@ -329,7 +329,8 @@ export const VodManager: React.FC = () => {
       const url = URL.createObjectURL(zipBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `repository.amertv-${addonConfig.version}.zip`;
+      const repoId = `repository.${addonConfig.addonId.replace('plugin.video.', '')}`;
+      a.download = `${repoId}-${addonConfig.version}.zip`;
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {

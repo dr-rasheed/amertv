@@ -78,8 +78,8 @@ ${pluginXml}
  */
 export async function createRepositoryZipBlob(config: KodiAddonConfig): Promise<Blob> {
   const zip = new JSZip();
-  const repoDirName = `repository.amertv`;
-  const repoFolder = zip.folder(repoDirName);
+  const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
+  const repoFolder = zip.folder(repoId);
 
   if (repoFolder) {
     repoFolder.file('addon.xml', generateRepositoryXml(config));
