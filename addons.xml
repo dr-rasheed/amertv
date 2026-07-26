@@ -19,13 +19,12 @@
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.22.0"/>
     <import addon="script.module.beautifulsoup4" version="4.9.3"/>
-    <import addon="script.module.urllib3" version="1.25.8"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="main.py">
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
-    <summary lang="ar">Summary</summary>
+    <summary lang="ar">مستودع AmerTV الموحد لجلب الأفلام والمسلسلات مع الانتهاء المباشر والانتقال التلقائي للحلقة التالية</summary>
     <description lang="ar">إضافة ميديا شاملة لـ Kodi مع كاشط متعدد المصادر (عرب كافيه، أكوام، إيجي بست، فاصل إعلاني، سيما فور يو، عرب سيد) مع التحديث التلقائي المباشر من مستودع GitHub (https://dr-rasheed.github.io/amertv) وتشغيل الحلقة التالية تلقائياً.</description>
     <platform>all</platform>
     <license>GPL-2.0-only</license>
