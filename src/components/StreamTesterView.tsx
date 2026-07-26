@@ -482,19 +482,17 @@ export const StreamTesterView: React.FC<StreamTesterViewProps> = ({
               >
                 {/* Channel Info */}
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 p-1 flex items-center justify-center shrink-0">
-                    {ch.logo ? (
-                      <img
-                        src={ch.logo}
-                        alt={ch.name}
-                        className="w-full h-full object-contain"
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
-                      />
-                    ) : (
-                      <span className="text-xs font-bold text-emerald-400">{ch.name.slice(0, 2)}</span>
-                    )}
+                  <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                    <img
+                      src={ch.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(ch.name)}&background=10b981&color=020617&size=64`}
+                      alt={ch.name}
+                      className="w-full h-full object-contain rounded"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(ch.name)}&background=0f766e&color=fff&size=64`;
+                      }}
+                    />
                   </div>
 
                   <div className="min-w-0">

@@ -16,6 +16,7 @@ export const ChannelCard: React.FC<ChannelCardProps> = ({
   onToggleFavorite,
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
+  const [imgError, setImgError] = useState<boolean>(false);
 
   const handleCopyExtinf = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -72,18 +73,16 @@ export const ChannelCard: React.FC<ChannelCardProps> = ({
         {/* Channel Icon & Name */}
         <div className="flex items-center gap-3.5 mb-3">
           <div className="relative w-12 h-12 rounded-xl bg-slate-950 p-1.5 border border-slate-800 flex items-center justify-center shrink-0 group-hover:border-slate-700 transition-colors overflow-hidden">
-            {channel.logo ? (
-              <img
-                src={channel.logo}
-                alt={channel.name}
-                className="w-full h-full object-contain rounded-lg"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = 'none';
-                }}
-              />
-            ) : (
-              <Radio className="w-6 h-6 text-emerald-400" />
-            )}
+            <img
+              src={channel.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=10b981&color=020617&size=64`}
+              alt={channel.name}
+              className="w-full h-full object-contain rounded-lg"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.onerror = null;
+                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=0f766e&color=fff&size=64`;
+              }}
+            />
           </div>
 
           <div className="overflow-hidden">

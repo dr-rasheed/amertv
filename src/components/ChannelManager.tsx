@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Plus, Filter, Sparkles, Download, Copy, Check, Tv, Compass, RefreshCcw } from 'lucide-react';
 import { Channel, ChannelCategory } from '../types';
-import { CATEGORIES } from '../data/channels';
+import { CATEGORIES, INITIAL_CHANNELS } from '../data/channels';
 import { ChannelCard } from './ChannelCard';
 
 interface ChannelManagerProps {
@@ -209,6 +209,22 @@ export const ChannelManager: React.FC<ChannelManagerProps> = ({
 
           {/* Quick Action Buttons */}
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
+            <button
+              id="reset-default-channels-btn"
+              onClick={() => {
+                if (confirm('هل ترغب في إعادة تحميل القائمة المحدثة بالكامل (تتضمن جميع قنوات MBC، الوثائقيات، روتانا، والرياضية)؟')) {
+                  setChannels(INITIAL_CHANNELS);
+                  setSyncMessage('تمت استعادة القائمة الشاملة المحدثة بنجاح!');
+                  setTimeout(() => setSyncMessage(''), 4000);
+                }
+              }}
+              className="bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 border border-purple-500/30 font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 transition-colors"
+              title="إعادة تحميل وتحديث قائمة القنوات الافتراضية المدمجة"
+            >
+              <RefreshCcw className="w-4 h-4 text-purple-400" />
+              <span>استعادة القائمة الافتراضية</span>
+            </button>
+
             <button
               id="sync-iptv-org-btn"
               onClick={handleSyncIptvOrg}

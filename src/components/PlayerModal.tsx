@@ -95,20 +95,16 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({ channel, onClose }) =>
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
           <div className="flex items-center gap-3">
-            {channel.logo ? (
-              <img
-                src={channel.logo}
-                alt={channel.name}
-                className="w-8 h-8 rounded-lg object-contain bg-slate-800 p-1 border border-slate-700"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = 'none';
-                }}
-              />
-            ) : (
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
-                {channel.name.slice(0, 2)}
-              </div>
-            )}
+            <img
+              src={channel.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=10b981&color=020617&size=64`}
+              alt={channel.name}
+              className="w-8 h-8 rounded-lg object-contain bg-slate-800 p-1 border border-slate-700 shrink-0"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.onerror = null;
+                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=0f766e&color=fff&size=64`;
+              }}
+            />
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-white text-base">{channel.name}</h3>
