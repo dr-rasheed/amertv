@@ -3,123 +3,123 @@
 <tv generator-info-name="Arabic IPTV EPG Generator" generator-info-url="https://github.com">
   <channel id="NatGeoAbuDhabi.ae">
     <display-name lang="ar">ناشيونال جيوغرافيك أبوظبي (سيرفر 1)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/NationalGeographicAbuDhabi.ae.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/ thumb/6/6a/National_Geographic_Logo.svg/500px-National_Geographic_Logo.svg.png" />
   </channel>
   <channel id="NatGeoAbuDhabi.ae">
     <display-name lang="ar">ناشيونال جيوغرافيك أبوظبي (سيرفر 2 المباشر)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/NationalGeographicAbuDhabi.ae.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/ thumb/6/6a/National_Geographic_Logo.svg/500px-National_Geographic_Logo.svg.png" />
   </channel>
   <channel id="NatGeoAbuDhabi.ae">
     <display-name lang="ar">ناشيونال جيوغرافيك أبوظبي (سيرفر 3 HD)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/NationalGeographicAbuDhabi.ae.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/ thumb/6/6a/National_Geographic_Logo.svg/500px-National_Geographic_Logo.svg.png" />
   </channel>
   <channel id="NatGeoWild.ae">
     <display-name lang="ar">ناشيونال جيوغرافيك وايلد HD (عربي)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/NatGeoWild.ae.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/National_Geographic_Logo.svg/500px-National_Geographic_Logo.svg.png" />
   </channel>
   <channel id="NationalGeographic.us">
     <display-name lang="ar">National Geographic Global HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/NationalGeographic.us.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/National_Geographic_Logo.svg/500px-National_Geographic_Logo.svg.png" />
   </channel>
   <channel id="NatGeoWild.us">
     <display-name lang="ar">Nat Geo Wild HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/NatGeoWild.us.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/National_Geographic_Logo.svg/500px-National_Geographic_Logo.svg.png" />
   </channel>
   <channel id="QuestArabiya.ae">
     <display-name lang="ar">كويست عربية Quest Arabiya HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/QuestArabiya.ae.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/QuestArabiya.ae.png" />
   </channel>
   <channel id="AlJazeeraDocumentary.qa">
     <display-name lang="ar">الجزيرة الوثائقية HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AlJazeeraDocumentary.qa.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/AlJazeeraDocumentary.qa.png" />
   </channel>
   <channel id="DWDocumentary.de">
     <display-name lang="ar">DW Documentary HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/DWDocumentary.de.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Deutsche_Welle_symbol_2012.svg/500px-Deutsche_Welle_symbol_2012.svg.png" />
   </channel>
   <channel id="CGTNDocumentary.cn">
     <display-name lang="ar">CGTN Documentary HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/CGTNDocumentary.cn.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/CGTNDocumentary.cn.png" />
   </channel>
   <channel id="NASATVPublic.us">
     <display-name lang="ar">NASA TV Public HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/NASATVPublic.us.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/NASATVPublic.us.png" />
   </channel>
   <channel id="SmithsonianChannel.us">
     <display-name lang="ar">Smithsonian Channel HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/SmithsonianChannel.us.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/SmithsonianChannel.us.png" />
   </channel>
   <channel id="LoveNature.ca">
     <display-name lang="ar">Love Nature HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/LoveNature.ca.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/LoveNature.ca.png" />
   </channel>
   <channel id="WildEarth.za">
     <display-name lang="ar">WildEarth TV Live HD (English)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/WildEarth.za.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/WildEarth.za.png" />
   </channel>
   <channel id="AlAraby2.qa">
     <display-name lang="ar">العربي 2 HD (وثائقيات وثقافة)</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AlAraby2.qa.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/AlAraby2.qa.png" />
   </channel>
   <channel id="AlJazeera.qa">
     <display-name lang="ar">الجزيرة الإخبارية HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AlJazeera.qa.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Al_Jazeera_Media_Network_logo.svg/500px-Al_Jazeera_Media_Network_logo.svg.png" />
   </channel>
   <channel id="AlArabiya.sa">
     <display-name lang="ar">العربية HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AlArabiya.sa.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Al_Arabiya_Logo.svg/500px-Al_Arabiya_Logo.svg.png" />
   </channel>
   <channel id="AlHadath.sa">
     <display-name lang="ar">قناة الحدث HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AlHadath.sa.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Al_Hadath_logo.svg/500px-Al_Hadath_logo.svg.png" />
   </channel>
   <channel id="SkyNewsArabia.ae">
     <display-name lang="ar">سكاي نيوز عربية HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/SkyNewsArabia.ae.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Sky_News_Arabia_logo.svg/500px-Sky_News_Arabia_logo.svg.png" />
   </channel>
   <channel id="BBCNewsArabic.uk">
     <display-name lang="ar">BBC عربي HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/BBCNewsArabic.uk.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/BBCNewsArabic.uk.png" />
   </channel>
   <channel id="France24Arabic.fr">
     <display-name lang="ar">فرانس 24 عربي HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/France24Arabic.fr.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/France24.svg/500px-France24.svg.png" />
   </channel>
   <channel id="TRTArabi.tr">
     <display-name lang="ar">TRT عربي HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/TRTArabi.tr.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/RT_logo.svg/500px-RT_logo.svg.png" />
   </channel>
   <channel id="DWArabic.de">
     <display-name lang="ar">DW عربية HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/DWArabic.de.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/DWArabic.de.png" />
   </channel>
   <channel id="RTArabic.ru">
     <display-name lang="ar">روسيا اليوم RT Arabic HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/RTArabic.ru.png" />
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/RT_logo.svg/500px-RT_logo.svg.png" />
   </channel>
   <channel id="AbuDhabiSports1.ae">
     <display-name lang="ar">أبوظبي الرياضية 1 HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AbuDhabiSports1.ae.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/AbuDhabiSports1.ae.png" />
   </channel>
   <channel id="AbuDhabiSports2.ae">
     <display-name lang="ar">أبوظبي الرياضية 2 HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AbuDhabiSports2.ae.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/AbuDhabiSports2.ae.png" />
   </channel>
   <channel id="DubaiSports1.ae">
     <display-name lang="ar">دبي الرياضية 1 HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/DubaiSports1.ae.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/DubaiSports1.ae.png" />
   </channel>
   <channel id="AlKass1.qa">
     <display-name lang="ar">قناة الكأس 1 HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/AlKass1.qa.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/AlKass1.qa.png" />
   </channel>
   <channel id="KuwaitTVSports.kw">
     <display-name lang="ar">الكويت الرياضية HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/KuwaitTVSports.kw.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/KuwaitTVSports.kw.png" />
   </channel>
   <channel id="OmanTVSports.om">
     <display-name lang="ar">عُمان الرياضية HD</display-name>
-    <icon src="https://iptv-org.github.io/iptv/logos/OmanTVSports.om.png" />
+    <icon src="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/OmanTVSports.om.png" />
   </channel>
   <channel id="MBC1.sa">
     <display-name lang="ar">MBC 1 HD</display-name>
