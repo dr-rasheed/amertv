@@ -28,16 +28,21 @@ export function generateM3uContent(channels: Channel[], options: M3uOptions): st
     const extinf = `#EXTINF:-1 tvg-id="${tvgId}" tvg-name="${tvgName}" tvg-logo="${tvgLogo}" group-title="${groupTitle}",${ch.name}`;
     lines.push(extinf);
 
-    // Kodi User Agent if set
-    if (options.kodiUserAgent) {
-      lines.push(`#EXTVLCOPT:http-user-agent=${options.kodiUserAgent}`);
+    // Kodi InputStream Adaptive directives
+    lines.push('#KODIPROP:inputstream=inputstream.adaptive');
+    lines.push('#KODIPROP:inputstream.adaptive.manifest_type=hls');
+
+    // Standard Desktop User Agent for CDN compatibility
+    const ua = ch.userAgent || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
+    lines.push(`#EXTVLCOPT:http-user-agent=${ua}`);
+
+    // Append pipe syntax for Kodi ffmpeg stream loader
+    let streamUrl = ch.url;
+    if (!streamUrl.includes('|User-Agent=')) {
+      streamUrl = `${streamUrl}|User-Agent=${ua}`;
     }
 
-    if (ch.userAgent) {
-      lines.push(`#EXTVLCOPT:http-user-agent=${ch.userAgent}`);
-    }
-
-    lines.push(ch.url);
+    lines.push(streamUrl);
   });
 
   return lines.join('\n');
