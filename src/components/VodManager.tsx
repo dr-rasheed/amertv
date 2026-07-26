@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { UnifiedMediaItem, SiteSource, KodiAddonConfig, SourceLink } from '../types/repository';
 import { INITIAL_UNIFIED_DATABASE } from '../data/unifiedDatabase';
-import { generateAddonXml, generatePythonMainScript, generateRepositoryXml } from '../utils/kodiAddonGenerator';
+import { 
+  generateAddonXml, 
+  generatePythonMainScript, 
+  generateRepositoryXml, 
+  generateIndexHtml,
+  createRepositoryZipBlob,
+  createPluginZipBlob,
+  createFullRepositoryReleaseBundleZipBlob
+} from '../utils/kodiAddonGenerator';
 import { 
   Film, PlaySquare, Youtube, Plus, Download, Edit3, Trash2, X, Info, 
   Code2, Server, Globe, CheckCircle2, Copy, Sparkles, Layers, RefreshCw,
-  Tv, ListFilter, ShieldCheck, Play, Radio
+  Tv, ListFilter, ShieldCheck, Play, Radio, AlertTriangle, FileCode, FolderArchive
 } from 'lucide-react';
 
 const INITIAL_SOURCES: SiteSource[] = [
@@ -93,6 +101,7 @@ export const VodManager: React.FC = () => {
   const [sources, setSources] = useState<SiteSource[]>(INITIAL_SOURCES);
   const [activeTab, setActiveTab] = useState<'database' | 'generator' | 'scrapers' | 'deploy'>('generator');
   const [selectedCategory, setSelectedCategory] = useState<string>('الكل');
+  const [isGeneratingZip, setIsGeneratingZip] = useState<boolean>(false);
 
   // Kodi Generator Configuration with AmerTV repository defaults
   const [addonConfig, setAddonConfig] = useState<KodiAddonConfig>({
@@ -163,6 +172,72 @@ export const VodManager: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
+  // Export index.html for GitHub Pages so Kodi can browse ZIP files
+  const handleExportIndexHtml = () => {
+    const htmlContent = generateIndexHtml(addonConfig);
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'index.html';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Generate & Download Repository ZIP (repository.amertv-1.0.0.zip)
+  const handleDownloadRepoZip = async () => {
+    try {
+      setIsGeneratingZip(true);
+      const zipBlob = await createRepositoryZipBlob(addonConfig);
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `repository.amertv-${addonConfig.version}.zip`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsGeneratingZip(false);
+    }
+  };
+
+  // Generate & Download Plugin ZIP (plugin.video.amertv-1.0.0.zip)
+  const handleDownloadPluginZip = async () => {
+    try {
+      setIsGeneratingZip(true);
+      const zipBlob = await createPluginZipBlob(addonConfig, dbItems);
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${addonConfig.addonId}-${addonConfig.version}.zip`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsGeneratingZip(false);
+    }
+  };
+
+  // Generate & Download FULL Release Bundle ZIP containing ALL repository files
+  const handleDownloadFullReleaseBundleZip = async () => {
+    try {
+      setIsGeneratingZip(true);
+      const zipBlob = await createFullRepositoryReleaseBundleZipBlob(addonConfig, dbItems);
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `amertv-github-release-v${addonConfig.version}.zip`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsGeneratingZip(false);
+    }
+  };
+
   // Add source link to temporary creation list
   const handleAddTempSource = () => {
     if (!newSource.streamUrl) return;
@@ -222,6 +297,7 @@ export const VodManager: React.FC = () => {
   const pythonScript = generatePythonMainScript(addonConfig, dbItems);
   const addonXml = generateAddonXml(addonConfig);
   const repoXml = generateRepositoryXml(addonConfig);
+  const indexHtml = generateIndexHtml(addonConfig);
   const jsonDbString = JSON.stringify({
     version: addonConfig.dbVersion,
     updatedAt: new Date().toISOString(),
@@ -252,19 +328,77 @@ export const VodManager: React.FC = () => {
           </div>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setIsGuideModalOpen(true)}
-              className="flex items-center gap-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg"
+              onClick={handleDownloadFullReleaseBundleZip}
+              disabled={isGeneratingZip}
+              className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-purple-900/40 border border-purple-400/30"
             >
-              <Info className="w-4 h-4" />
-              طريقة التثبيت والشرح
+              <FolderArchive className="w-4 h-4 text-purple-200 animate-bounce" />
+              {isGeneratingZip ? 'جاري تجميع حزمة المستودع...' : '📦 تحميل حزمة المستودع الكاملة (.ZIP)'}
             </button>
             <button
-              onClick={handleExportJsonDb}
-              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-emerald-900/20"
+              onClick={handleDownloadRepoZip}
+              disabled={isGeneratingZip}
+              className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all border border-slate-700"
             >
-              <Download className="w-4 h-4" />
-              تصدير media_database.json
+              <Download className="w-4 h-4 text-purple-400" />
+              repository.amertv.zip فقط
             </button>
+            <button
+              onClick={() => setIsGuideModalOpen(true)}
+              className="flex items-center gap-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-lg"
+            >
+              <Info className="w-4 h-4" />
+              طريقة التثبيت المباشر
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* CRITICAL SOLUTION CALLOUT FOR EMPTY KODI FOLDER */}
+      <div className="bg-amber-950/40 border border-amber-500/40 rounded-2xl p-5 text-amber-200 space-y-3 relative overflow-hidden">
+        <div className="flex items-center gap-3">
+          <AlertTriangle className="w-6 h-6 text-amber-400 flex-shrink-0 animate-pulse" />
+          <h3 className="font-bold text-base text-amber-100">
+            ⚠️ سبب ظهور المجلد فارغاً عند فتح الرابط في Kodi وطريقة الحل المباشرة:
+          </h3>
+        </div>
+        <p className="text-xs text-amber-200/90 leading-relaxed">
+          عندما تفتح الرابط <code className="bg-amber-950 px-2 py-0.5 rounded text-emerald-300 font-mono" dir="ltr">https://dr-rasheed.github.io/amertv/</code> في كودي عبر <strong className="text-amber-100">Install from zip file</strong>، يبحث كودي داخل الرابط عن ملف مضغوط <code className="text-purple-300 font-mono">repository.amertv-1.0.0.zip</code> وملف <code className="text-blue-300 font-mono">index.html</code>. إذا لم تكن هذه الملفات مرفوعة داخل مستودعك على GitHub، سيرى كودي المجلد فارغاً!
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+          {/* Solution 1: Upload to GitHub */}
+          <div className="bg-slate-900/80 rounded-xl p-3.5 border border-slate-800 space-y-2">
+            <h4 className="font-bold text-xs text-purple-300 flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px]">1</span>
+              الحل الأول: رفع الملفات لـ GitHub لتظهر في كودي مباشرة
+            </h4>
+            <p className="text-[11px] text-slate-300">حمل الملفات التالية وارفعها إلى مستودعك <code className="text-emerald-400" dir="ltr">dr-rasheed/amertv</code>:</p>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <button onClick={handleDownloadRepoZip} className="bg-purple-600 hover:bg-purple-500 text-white text-xs px-3 py-1.5 rounded-lg font-medium flex items-center gap-1">
+                <FolderArchive className="w-3.5 h-3.5" /> تحميل repository.amertv.zip
+              </button>
+              <button onClick={handleExportIndexHtml} className="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded-lg font-medium flex items-center gap-1">
+                <FileCode className="w-3.5 h-3.5" /> تحميل index.html
+              </button>
+              <button onClick={handleExportJsonDb} className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-medium flex items-center gap-1">
+                <Download className="w-3.5 h-3.5" /> تحميل media_database.json
+              </button>
+            </div>
+          </div>
+
+          {/* Solution 2: Direct Zip Install */}
+          <div className="bg-slate-900/80 rounded-xl p-3.5 border border-slate-800 space-y-2">
+            <h4 className="font-bold text-xs text-emerald-300 flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">2</span>
+              الحل الثاني: التثبيت المباشر من الذاكرة المحلية (بدون GitHub)
+            </h4>
+            <p className="text-[11px] text-slate-300">حمل ملف الإضافة المباشر على هاتفك/شاشتك، ثم اختر <strong className="text-white">Install from zip file</strong> واختر الملف من ذاكرة الجهاز المحلية:</p>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <button onClick={handleDownloadPluginZip} className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-medium flex items-center gap-1">
+                <Download className="w-3.5 h-3.5" /> تحميل plugin.video.amertv.zip المباشر
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -395,6 +529,23 @@ export const VodManager: React.FC = () => {
                   dir="ltr"
                 />
               </div>
+
+              <div className="pt-2 border-t border-slate-800 space-y-2">
+                <button
+                  onClick={handleDownloadRepoZip}
+                  className="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg"
+                >
+                  <FolderArchive className="w-4 h-4" />
+                  تحميل repository.amertv.zip جاهز
+                </button>
+                <button
+                  onClick={handleExportIndexHtml}
+                  className="w-full bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition-colors"
+                >
+                  <FileCode className="w-4 h-4" />
+                  تحميل index.html
+                </button>
+              </div>
             </div>
 
             {/* Code Output Viewer */}
@@ -420,7 +571,19 @@ export const VodManager: React.FC = () => {
           </div>
 
           {/* Additional Files Manifests */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-2">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="font-bold text-xs text-slate-200 font-mono">index.html</span>
+                <button onClick={() => handleCopy(indexHtml, 'index.html')} className="text-xs text-blue-400 hover:underline">
+                  {copiedCode === 'index.html' ? 'تم!' : 'نسخ'}
+                </button>
+              </div>
+              <div className="bg-slate-950 rounded-lg p-2.5 font-mono text-[11px] text-blue-300/90 overflow-x-auto max-h-36" dir="ltr">
+                <pre>{indexHtml}</pre>
+              </div>
+            </div>
+
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-2">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <span className="font-bold text-xs text-slate-200 font-mono">addon.xml</span>
@@ -440,7 +603,7 @@ export const VodManager: React.FC = () => {
                   {copiedCode === 'repoXml' ? 'تم!' : 'نسخ'}
                 </button>
               </div>
-              <div className="bg-slate-950 rounded-lg p-2.5 font-mono text-[11px] text-blue-300/90 overflow-x-auto max-h-36" dir="ltr">
+              <div className="bg-slate-950 rounded-lg p-2.5 font-mono text-[11px] text-purple-300/90 overflow-x-auto max-h-36" dir="ltr">
                 <pre>{repoXml}</pre>
               </div>
             </div>
@@ -612,27 +775,41 @@ export const VodManager: React.FC = () => {
             <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50 space-y-3">
               <h4 className="font-bold text-purple-400 flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs">1</span>
-                الملفات المطلوبة في المستودع الرئيسي
+                الملفات المطلوبة للرفع في مستودع GitHub
               </h4>
-              <p className="text-xs text-slate-400">احفظ الملفات التالية وارفعها على مستودع GitHub الخاص بك:</p>
-              <ul className="space-y-1.5 text-xs text-slate-200 font-mono" dir="ltr">
-                <li>• media_database.json (دليل الأفلام والمسلسلات)</li>
-                <li>• main.py (كود الكشط والتشغيل الرئيسي)</li>
-                <li>• addon.xml (ملف تعريف الإضافة)</li>
-                <li>• repository.xml (ملف تعريف المستودع)</li>
-              </ul>
+              <p className="text-xs text-slate-400">حمل الملفات التالية وارفعها مباشرة داخل مستودعك <code className="text-purple-300" dir="ltr">dr-rasheed/amertv</code>:</p>
+              
+              <div className="space-y-2 pt-2">
+                <button onClick={handleDownloadFullReleaseBundleZip} className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs px-3 py-2.5 rounded-lg font-bold flex items-center justify-between shadow-lg border border-purple-400/30">
+                  <span>📦 تحميل حزمة المستودع الشاملة (كل الملفات بـ ZIP واحد)</span>
+                  <FolderArchive className="w-4 h-4 text-purple-200" />
+                </button>
+                <button onClick={handleDownloadRepoZip} className="w-full bg-purple-600/40 hover:bg-purple-600/60 text-purple-200 text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between border border-purple-500/30">
+                  <span>1. repository.amertv-1.0.0.zip (ملف المستودع)</span>
+                  <FolderArchive className="w-4 h-4" />
+                </button>
+                <button onClick={handleExportIndexHtml} className="w-full bg-blue-600/30 hover:bg-blue-600/50 text-blue-200 text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between border border-blue-500/30">
+                  <span>2. index.html (ضروري جدا لكي يقرأ كودي المجلد)</span>
+                  <FileCode className="w-4 h-4" />
+                </button>
+                <button onClick={handleExportJsonDb} className="w-full bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between border border-emerald-500/30">
+                  <span>3. media_database.json (دليل الأفلام)</span>
+                  <Download className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50 space-y-3">
               <h4 className="font-bold text-purple-400 flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs">2</span>
-                طريقة ربط Kodi بـ AmerTV
+                طريقة التثبيت داخل Kodi
               </h4>
-              <ol className="list-decimal list-inside space-y-1.5 text-xs text-slate-300">
-                <li>في كودي انتقل إلى <strong className="text-white">File Manager -&gt; Add source</strong>.</li>
+              <ol className="list-decimal list-inside space-y-2 text-xs text-slate-300 leading-relaxed">
+                <li>من شاشة Kodi اذهب إلى <strong className="text-white">Settings -&gt; File Manager -&gt; Add source</strong>.</li>
                 <li>ضع الرابط: <code className="bg-slate-950 px-2 py-0.5 rounded text-emerald-400 font-mono" dir="ltr">https://dr-rasheed.github.io/amertv/</code></li>
-                <li>سمّه <strong className="text-purple-300">AmerTV Repo</strong>.</li>
-                <li>ثبت المستودع من zip وسيتم تحديث المكتبة والسيرفرات تلقائياً عند كل تشغيل لـ Kodi!</li>
+                <li>سمّ المصدر <strong className="text-purple-300">AmerTV Repo</strong> ثم اضغط OK.</li>
+                <li>اذهب إلى <strong className="text-white">Add-ons -&gt; Install from zip file</strong> واختر <strong className="text-purple-300">AmerTV Repo</strong>.</li>
+                <li>ستجد ملف <code className="text-emerald-400 font-mono">repository.amertv-1.0.0.zip</code> ظاهراً فوراً! قم بالضغط عليه لتثبيته.</li>
               </ol>
             </div>
           </div>

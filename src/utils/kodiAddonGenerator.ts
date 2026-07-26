@@ -1,4 +1,5 @@
 import { KodiAddonConfig, UnifiedMediaItem } from '../types/repository';
+import JSZip from 'jszip';
 
 /**
  * Generates valid Kodi 19/20/21 Python (Matrix/Nexus/Omega) addon.xml
@@ -27,6 +28,126 @@ export function generateAddonXml(config: KodiAddonConfig): string {
     </assets>
   </extension>
 </addon>`;
+}
+
+/**
+ * Generates index.html for Kodi HTTP directory scraping
+ */
+export function generateIndexHtml(config: KodiAddonConfig): string {
+  const repoZipName = `repository.amertv-${config.version}.zip`;
+  const pluginZipName = `${config.addonId}-${config.version}.zip`;
+
+  return `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>AmerTV Repository for Kodi</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; }
+        h1 { color: #a855f7; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 10px 0; background: #1e293b; padding: 12px; rounded: 8px; }
+        a { color: #38bdf8; font-size: 18px; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>مستودع AmerTV الرسمي لكودي (Kodi)</h1>
+    <p>قم بالضغط على أحد الملفات أدناه للتحميل أو استخدم هذا الرابط في Kodi File Manager:</p>
+    <ul>
+        <li><a href="${repoZipName}">${repoZipName}</a> (ملف تثبيت المستودع الرئيسي)</li>
+        <li><a href="${pluginZipName}">${pluginZipName}</a> (ملف الإضافة المباشر)</li>
+        <li><a href="media_database.json">media_database.json</a> (دليل الأفلام والمسلسلات)</li>
+        <li><a href="addons.xml">addons.xml</a></li>
+    </ul>
+</body>
+</html>`;
+}
+
+/**
+ * Generates aggregated addons.xml for the repository
+ */
+export function generateAddonsXml(config: KodiAddonConfig): string {
+  const repoXml = generateRepositoryXml(config);
+  const pluginXml = generateAddonXml(config);
+
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addons>
+${repoXml}
+${pluginXml}
+</addons>`;
+}
+
+/**
+ * Generates repository.amertv-1.0.0.zip as a downloadable Blob
+ */
+export async function createRepositoryZipBlob(config: KodiAddonConfig): Promise<Blob> {
+  const zip = new JSZip();
+  const repoDirName = `repository.amertv`;
+  const repoFolder = zip.folder(repoDirName);
+
+  if (repoFolder) {
+    repoFolder.file('addon.xml', generateRepositoryXml(config));
+    repoFolder.file('changelog.txt', `AmerTV Repository v${config.version}\n- Initial Release with Matrix & ZombiB Scrapers`);
+  }
+
+  return await zip.generateAsync({ type: 'blob' });
+}
+
+/**
+ * Generates plugin.video.amertv-1.0.0.zip as a downloadable Blob
+ */
+export async function createPluginZipBlob(config: KodiAddonConfig, dbItems: UnifiedMediaItem[]): Promise<Blob> {
+  const zip = new JSZip();
+  const pluginFolder = zip.folder(config.addonId);
+
+  if (pluginFolder) {
+    pluginFolder.file('addon.xml', generateAddonXml(config));
+    pluginFolder.file('main.py', generatePythonMainScript(config, dbItems));
+    pluginFolder.file('media_database.json', JSON.stringify({
+      version: config.dbVersion,
+      updatedAt: new Date().toISOString(),
+      items: dbItems
+    }, null, 2));
+  }
+
+  return await zip.generateAsync({ type: 'blob' });
+}
+
+/**
+ * Creates a single Master GitHub Release Bundle ZIP containing all repository files:
+ * - repository.amertv-1.0.0.zip
+ * - plugin.video.amertv-1.0.0.zip
+ * - index.html
+ * - addons.xml
+ * - media_database.json
+ */
+export async function createFullRepositoryReleaseBundleZipBlob(config: KodiAddonConfig, dbItems: UnifiedMediaItem[]): Promise<Blob> {
+  const bundleZip = new JSZip();
+
+  // 1. Generate repo zip
+  const repoZipBlob = await createRepositoryZipBlob(config);
+  bundleZip.file(`repository.amertv-${config.version}.zip`, repoZipBlob);
+
+  // 2. Generate plugin zip
+  const pluginZipBlob = await createPluginZipBlob(config, dbItems);
+  bundleZip.file(`${config.addonId}-${config.version}.zip`, pluginZipBlob);
+
+  // 3. Generate index.html
+  bundleZip.file('index.html', generateIndexHtml(config));
+
+  // 4. Generate addons.xml
+  bundleZip.file('addons.xml', generateAddonsXml(config));
+
+  // 5. Generate media_database.json
+  const sortedItems = [...dbItems].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
+  bundleZip.file('media_database.json', JSON.stringify({
+    version: config.dbVersion,
+    updatedAt: new Date().toISOString(),
+    items: sortedItems
+  }, null, 2));
+
+  return await bundleZip.generateAsync({ type: 'blob' });
 }
 
 /**
