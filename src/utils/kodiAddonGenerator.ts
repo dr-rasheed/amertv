@@ -2,12 +2,30 @@ import { KodiAddonConfig, UnifiedMediaItem } from '../types/repository';
 import JSZip from 'jszip';
 import md5 from 'md5';
 
+function escapeXml(unsafe: string): string {
+  return unsafe.replace(/[<>&'"]/g, function (c) {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case '\'': return '&apos;';
+      case '"': return '&quot;';
+      default: return c;
+    }
+  });
+}
+
 /**
  * Generates valid Kodi 19/20/21 Python (Matrix/Nexus/Omega) addon.xml
  */
 export function generateAddonXml(config: KodiAddonConfig): string {
+  const safeName = escapeXml(config.addonName);
+  const safeProvider = escapeXml(config.providerName);
+  const safeSummary = escapeXml(config.summary);
+  const safeRepoUrl = escapeXml(config.repoUrl);
+
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="${config.addonId}" name="${config.addonName}" version="${config.version}" provider-name="${config.providerName}">
+<addon id="${config.addonId}" name="${safeName}" version="${config.version}" provider-name="${safeProvider}">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.22.0"/>
@@ -18,9 +36,8 @@ export function generateAddonXml(config: KodiAddonConfig): string {
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
-    <summary lang="ar">${config.summary}</summary>
-    <description lang="ar">إضافة ميديا شاملة لـ Kodi مع كاشط متعدد المصادر (عرب كافيه، أكوام، إيجي بست، فاصل إعلاني، سيما فور يو، عرب سيد) مع التحديث التلقائي المباشر من مستودع GitHub (${config.repoUrl}) وتشغيل الحلقة التالية تلقائياً.</description>
-
+    <summary lang="ar">${safeSummary}</summary>
+    <description lang="ar">إضافة ميديا شاملة لـ Kodi مع كاشط متعدد المصادر (عرب كافيه، أكوام، إيجي بست، فاصل إعلاني، سيما فور يو، عرب سيد) مع التحديث التلقائي المباشر من مستودع GitHub (${safeRepoUrl}) وتشغيل الحلقة التالية تلقائياً.</description>
     <platform>all</platform>
     <license>GPL-2.0-only</license>
     <assets>
@@ -502,19 +519,22 @@ export function generateRepositoryXml(config: KodiAddonConfig): string {
   const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
   const baseUrl = config.repoUrl.replace(/\/$/, ''); // Remove trailing slash if present
   
+  const safeName = escapeXml(config.addonName);
+  const safeProvider = escapeXml(config.providerName);
+  const safeBaseUrl = escapeXml(baseUrl);
+  
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="${repoId}" name="مستودع ${config.addonName}" version="${config.version}" provider-name="${config.providerName}">
-  <extension point="xbmc.addon.repository" name="مستودع ${config.addonName}">
+<addon id="${repoId}" name="مستودع ${safeName}" version="${config.version}" provider-name="${safeProvider}">
+  <extension point="xbmc.addon.repository" name="مستودع ${safeName}">
     <dir>
-      <info compressed="false">${baseUrl}/addons.xml</info>
-      <checksum>${baseUrl}/addons.xml.md5</checksum>
-      <datadir zip="true">${baseUrl}/</datadir>
+      <info compressed="false">${safeBaseUrl}/addons.xml</info>
+      <checksum>${safeBaseUrl}/addons.xml.md5</checksum>
+      <datadir zip="true">${safeBaseUrl}/</datadir>
     </dir>
   </extension>
   <extension point="xbmc.addon.metadata">
-    <summary lang="ar">المستودع الرسمي الموحد لإضافات AmerTV ومكشوطات الأفلام والمسلسلات (ZombiB & Matrix)</summary>
+    <summary lang="ar">المستودع الرسمي الموحد لإضافات AmerTV ومكشوطات الأفلام والمسلسلات (ZombiB &amp; Matrix)</summary>
     <description lang="ar">ثبت هذا المستودع في Kodi للحصول على التحديثات التلقائية المستمرة لجميع مصادر الميديا والمسلسلات والأفلام مع دعم الانتهاء المباشر والانتقال التلقائي بين الحلقات.</description>
-
     <platform>all</platform>
   </extension>
 </addon>`;

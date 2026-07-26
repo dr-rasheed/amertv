@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.amertv" name="مستودع AmerTV Matrix &amp; ZombiB Repository" version="1.0.0" provider-name="AmerTV Developer">
+  <extension point="xbmc.addon.repository" name="مستودع AmerTV Matrix &amp; ZombiB Repository">
+    <dir>
+      <info compressed="false">https://dr-rasheed.github.io/amertv/addons.xml</info>
+      <checksum>https://dr-rasheed.github.io/amertv/addons.xml.md5</checksum>
+      <datadir zip="true">https://dr-rasheed.github.io/amertv/</datadir>
+    </dir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="ar">المستودع الرسمي الموحد لإضافات AmerTV ومكشوطات الأفلام والمسلسلات (ZombiB &amp; Matrix)</summary>
+    <description lang="ar">ثبت هذا المستودع في Kodi للحصول على التحديثات التلقائية المستمرة لجميع مصادر الميديا والمسلسلات والأفلام مع دعم الانتهاء المباشر والانتقال التلقائي بين الحلقات.</description>
+    <platform>all</platform>
+  </extension>
+</addon>
