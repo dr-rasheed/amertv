@@ -159,16 +159,77 @@ export const GithubGuideView: React.FC<GithubGuideViewProps> = ({ channels }) =>
       // Generate EPG XML content
       const epgXmlContent = generateEpgXmlContent(channels);
 
-      setUploadStatus('1/3: جاري رفع تحديث M3U (ar.m3u)...');
+      // Generate Standalone Landing index.html for GitHub Pages so visiting dr-rasheed.github.io/amertv is never blank!
+      const landingHtml = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة AmerTV IPTV | M3U & EPG Playlist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 sm:p-8 flex flex-col items-center justify-center">
+  <div class="max-w-2xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+    <div class="text-center space-y-3">
+      <div class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-1.5 rounded-full text-xs font-bold border border-emerald-500/20">
+        ✨ بوابة IPTV M3U المباشرة الشغالة
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-white">AmerTV IPTV Playlist Repository</h1>
+      <p class="text-slate-400 text-xs sm:text-sm">مستودع القنوات العربية والدليل الإلكتروني EPG المحدث تلقائياً لبرنامج Kodi و IPTV Simple Client</p>
+    </div>
+
+    <div class="space-y-3 bg-slate-950 p-4 sm:p-6 rounded-2xl border border-slate-800 text-xs">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-slate-900 rounded-xl border border-slate-800">
+        <div class="space-y-1">
+          <span class="text-emerald-400 font-bold">رابط قائمة القنوات M3U المباشر:</span>
+          <p class="font-mono text-slate-300 break-all select-all">https://${githubUser}.github.io/${repoName}/ar.m3u</p>
+        </div>
+        <a href="./ar.m3u" download class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-lg shrink-0 text-center transition-colors">تحميل M3U</a>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-slate-900 rounded-xl border border-slate-800">
+        <div class="space-y-1">
+          <span class="text-amber-400 font-bold">رابط دليل البرامج EPG المباشر:</span>
+          <p class="font-mono text-slate-300 break-all select-all">https://raw.githubusercontent.com/${githubUser}/${repoName}/${branch}/ar.xml</p>
+        </div>
+        <a href="./ar.xml" download class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg shrink-0 text-center transition-colors">تحميل EPG</a>
+      </div>
+    </div>
+
+    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-2">
+      <h3 class="font-bold text-slate-200">طريقة الاستخدام في تطبيق Kodi:</h3>
+      <ol class="list-decimal list-inside space-y-1 text-slate-400 leading-relaxed">
+        <li>افتح إضافة <strong class="text-white">IPTV Simple Client</strong> في Kodi.</li>
+        <li>في خانة M3U URL ضع رابط المباشر: <code class="text-emerald-400 font-mono">https://${githubUser}.github.io/${repoName}/ar.m3u</code></li>
+        <li>في خانة EPG URL ضع رابط الدليل: <code class="text-amber-400 font-mono">https://raw.githubusercontent.com/${githubUser}/${repoName}/${branch}/ar.xml</code></li>
+        <li>أعد تشغيل Kodi وستعمل جميع القنوات فوراً!</li>
+      </ol>
+    </div>
+
+    <div class="text-center text-[11px] text-slate-500 pt-2 border-t border-slate-800">
+      تم إنشاؤه وتحديثه بواسطة تطبيق AmerTV Kodi Manager UI
+    </div>
+  </div>
+</body>
+</html>`;
+
+      setUploadStatus('1/4: جاري رفع تحديث M3U (ar.m3u)...');
       await pushFileToGitHub('ar.m3u', m3uContent, 'Auto-update ar.m3u playlist via Kodi Manager UI');
 
-      setUploadStatus('2/3: جاري رفع تحديث دليل EPG (ar.xml)...');
+      setUploadStatus('2/4: جاري رفع تحديث دليل EPG (ar.xml)...');
       await pushFileToGitHub('ar.xml', epgXmlContent, 'Auto-update ar.xml EPG guide via Kodi Manager UI');
 
-      setUploadStatus('3/3: جاري التأكد من وجود ملف .nojekyll...');
+      setUploadStatus('3/4: جاري رفع واجهة البوابة (index.html)...');
+      await pushFileToGitHub('index.html', landingHtml, 'Add standalone portal landing page for GitHub Pages');
+
+      setUploadStatus('4/4: جاري التأكد من وجود ملف .nojekyll...');
       await pushFileToGitHub('.nojekyll', '', 'Ensure .nojekyll exists for GitHub Pages');
 
-      setUploadStatus('🎉 تم رفع وتحديث جميع الملفات بنجاح على GitHub! أصبحت قناتك ودليلك محدثين أونلاين فوراً.');
+      setUploadStatus('🎉 تم رفع وتحديث جميع الملفات وواجهة الموقع بنجاح على GitHub! أصبحت قناتك والموقع المباشر محدثين فوراً.');
     } catch (err: any) {
       setUploadError(err.message || 'حدث خطأ أثناء التحديث عبر GitHub API.');
     } finally {
