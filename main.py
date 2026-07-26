@@ -37,19 +37,19 @@ try:
     
     def get_local_db_path():
         profile_path = xbmcvfs.translatePath(f"special://profile/addon_data/{ADDON_ID}/")
-        if not xbmcvfs.exists(profile_path):
-            xbmcvfs.mkdirs(profile_path)
+        if not os.path.exists(profile_path):
+            os.makedirs(profile_path)
         return os.path.join(profile_path, "media_database.json")
     
     def load_database():
         db_path = get_local_db_path()
         check_and_update_db(db_path)
-        if xbmcvfs.exists(db_path):
+        if os.path.exists(db_path):
             try:
                 with open(db_path, 'r', encoding='utf-8') as f:
                     return json.load(f)
             except Exception as e:
-                xbmc.log(f"[{ADDON_ID}] Error reading local DB: {e}", xbmc.LOGINFO)
+                xbmc.log(f"[{ADDON_ID}] Error reading local DB: {e}")
         return EMBEDDED_DATABASE
     
     def check_and_update_db(db_path):
@@ -58,7 +58,7 @@ try:
             if response.status_code == 200:
                 remote_data = response.json()
                 should_update = True
-                if xbmcvfs.exists(db_path):
+                if os.path.exists(db_path):
                     with open(db_path, 'r', encoding='utf-8') as f:
                         local_data = json.load(f)
                         if local_data.get('version') == remote_data.get('version'):
@@ -68,7 +68,7 @@ try:
                         json.dump(remote_data, f, ensure_ascii=False, indent=2)
                     xbmcgui.Dialog().notification("AmerTV Repository", "تم تحديث مكتبة الأفلام والمسلسلات بنجاح!", 'info', 3000)
         except Exception as e:
-            xbmc.log(f"[{ADDON_ID}] Online DB sync skipped: {e}", xbmc.LOGINFO)
+            xbmc.log(f"[{ADDON_ID}] Online DB sync skipped: {e}")
     
     def get_params():
         param = {}
@@ -227,11 +227,11 @@ try:
             next_episode_callback=play_next
         )
     
-    EMBEDDED_DATABASE = json.loads(base64.b64decode("eyJ2ZXJzaW9uIjoxLCJ1cGRhdGVkQXQiOiIyMDI2LTA3LTI2VDIxOjAzOjEyLjYxMloiLCJpdGVtcyI6W119").decode('utf-8'))
+    EMBEDDED_DATABASE = json.loads(base64.b64decode("eyJ2ZXJzaW9uIjoxLCJ1cGRhdGVkQXQiOiIyMDI2LTA3LTI2VDIxOjEyOjU3LjczNloiLCJpdGVtcyI6W119").decode('utf-8'))
     
     params = get_params()
     mode = params.get('mode')
-    if mode is None:
+    if not mode:
         main_menu()
     elif mode == 'view_all_sorted':
         view_items()
@@ -252,4 +252,9 @@ try:
         main_menu()
     
 except Exception as e:
+    xbmc.log("AmerTV Crash: " + traceback.format_exc())
     xbmcgui.Dialog().textviewer("AmerTV Error", traceback.format_exc())
+    try:
+        xbmcplugin.endOfDirectory(int(sys.argv[1]), succeeded=False)
+    except:
+        pass
