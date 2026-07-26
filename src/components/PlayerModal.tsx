@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 import { X, Play, AlertCircle, RefreshCw, CheckCircle2, ShieldCheck, Radio } from 'lucide-react';
 import { Channel } from '../types';
+import { getReliableChannelLogo } from '../utils/logoHelper';
 
 interface PlayerModalProps {
   channel: Channel | null;
@@ -96,13 +97,13 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({ channel, onClose }) =>
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
           <div className="flex items-center gap-3">
             <img
-              src={channel.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=10b981&color=020617&size=64`}
+              src={getReliableChannelLogo(channel.id, channel.name, channel.logo)}
               alt={channel.name}
               className="w-8 h-8 rounded-lg object-contain bg-slate-800 p-1 border border-slate-700 shrink-0"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.onerror = null;
-                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=0f766e&color=fff&size=64`;
+                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name.slice(0, 10))}&background=0f766e&color=fff&size=64`;
               }}
             />
             <div>

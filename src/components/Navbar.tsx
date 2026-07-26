@@ -1,7 +1,7 @@
 import React from 'react';
-import { Tv, FileText, Calendar, Github, MonitorPlay, Link2, Sparkles, Activity } from 'lucide-react';
+import { Tv, FileText, Calendar, Github, MonitorPlay, Link2, Sparkles, Activity, Zap } from 'lucide-react';
 
-export type ActiveTab = 'channels' | 'tester' | 'm3u' | 'epg' | 'github' | 'kodi' | 'shortener';
+export type ActiveTab = 'wizard' | 'channels';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -11,13 +11,8 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, channelCount }) => {
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode; badge?: string }[] = [
-    { id: 'channels', label: 'القنوات والأدوات', icon: <Tv className="w-4 h-4" />, badge: `${channelCount}` },
-    { id: 'tester', label: 'فحص الروابط والمصادر', icon: <Activity className="w-4 h-4" />, badge: 'جديد' },
-    { id: 'm3u', label: 'ملف M3U', icon: <FileText className="w-4 h-4" /> },
-    { id: 'epg', label: 'دليل EPG', icon: <Calendar className="w-4 h-4" /> },
-    { id: 'github', label: 'ربط وتحديث GitHub', icon: <Github className="w-4 h-4" />, badge: 'تحديث' },
-    { id: 'kodi', label: 'شرح Kodi Simple Client', icon: <MonitorPlay className="w-4 h-4" /> },
-    { id: 'shortener', label: 'الروابط القصيرة', icon: <Link2 className="w-4 h-4" /> },
+    { id: 'wizard', label: 'معالج التحديث والنشر المباشر', icon: <Zap className="w-4 h-4 text-amber-400" />, badge: 'الموصى به' },
+    { id: 'channels', label: 'القنوات والتصفية', icon: <Tv className="w-4 h-4" />, badge: `${channelCount}` },
   ];
 
   return (

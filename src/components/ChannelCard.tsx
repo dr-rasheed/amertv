@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Play, Copy, Check, Star, Radio, ShieldAlert } from 'lucide-react';
 import { Channel } from '../types';
+import { getReliableChannelLogo } from '../utils/logoHelper';
 
 interface ChannelCardProps {
   channel: Channel;
@@ -74,13 +75,13 @@ export const ChannelCard: React.FC<ChannelCardProps> = ({
         <div className="flex items-center gap-3.5 mb-3">
           <div className="relative w-12 h-12 rounded-xl bg-slate-950 p-1.5 border border-slate-800 flex items-center justify-center shrink-0 group-hover:border-slate-700 transition-colors overflow-hidden">
             <img
-              src={channel.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=10b981&color=020617&size=64`}
+              src={getReliableChannelLogo(channel.id, channel.name, channel.logo)}
               alt={channel.name}
               className="w-full h-full object-contain rounded-lg"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.onerror = null;
-                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name)}&background=0f766e&color=fff&size=64`;
+                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.name.slice(0, 10))}&background=0f766e&color=fff&size=64`;
               }}
             />
           </div>

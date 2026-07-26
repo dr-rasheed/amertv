@@ -2,18 +2,13 @@ import React, { useState } from 'react';
 import { Channel } from './types';
 import { INITIAL_CHANNELS } from './data/channels';
 import { Navbar, ActiveTab } from './components/Navbar';
+import { SmartWizardView } from './components/SmartWizardView';
 import { ChannelManager } from './components/ChannelManager';
-import { StreamTesterView } from './components/StreamTesterView';
-import { M3uGeneratorView } from './components/M3uGeneratorView';
-import { EpgGeneratorView } from './components/EpgGeneratorView';
-import { GithubGuideView } from './components/GithubGuideView';
-import { KodiGuideView } from './components/KodiGuideView';
-import { ShortnerHelper } from './components/ShortnerHelper';
 import { PlayerModal } from './components/PlayerModal';
-import { Tv, Github, Sparkles, Heart } from 'lucide-react';
+import { Tv } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('channels');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('wizard');
   const [channels, setChannels] = useState<Channel[]>(INITIAL_CHANNELS);
   const [favorites, setFavorites] = useState<string[]>(['natgeo-abudhabi', 'aljazeera-news', 'ad-sports-1']);
   const [playingChannel, setPlayingChannel] = useState<Channel | null>(null);
@@ -29,6 +24,14 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'wizard' && (
+          <SmartWizardView
+            channels={channels}
+            setChannels={setChannels}
+            onPlayChannel={(channel) => setPlayingChannel(channel)}
+          />
+        )}
+
         {activeTab === 'channels' && (
           <ChannelManager
             channels={channels}
@@ -38,24 +41,6 @@ export default function App() {
             setFavorites={setFavorites}
           />
         )}
-
-        {activeTab === 'tester' && (
-          <StreamTesterView
-            channels={channels}
-            setChannels={setChannels}
-            onPlayChannel={(channel) => setPlayingChannel(channel)}
-          />
-        )}
-
-        {activeTab === 'm3u' && <M3uGeneratorView channels={channels} />}
-
-        {activeTab === 'epg' && <EpgGeneratorView channels={channels} />}
-
-        {activeTab === 'github' && <GithubGuideView channels={channels} />}
-
-        {activeTab === 'kodi' && <KodiGuideView />}
-
-        {activeTab === 'shortener' && <ShortnerHelper />}
       </main>
 
       {/* Stream Test Player Modal */}
@@ -74,43 +59,29 @@ export default function App() {
             <div>
               <p className="font-bold text-slate-200 text-sm">Kodi Arabic IPTV Manager</p>
               <p className="text-[11px] text-slate-500">
-                مُصمم لتأمين أفضل تجربة مشاهدة للقنوات العربية على Kodi IPTV Simple Client
+                تطبيق مبسط لإدارة وتحديث قنوات Kodi IPTV والرفع المباشر على GitHub
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex items-center gap-3 text-slate-400">
             <button
-              onClick={() => setActiveTab('m3u')}
+              onClick={() => setActiveTab('wizard')}
               className="hover:text-emerald-400 transition-colors"
             >
-              تحميل M3U
+              معالج التحديث
             </button>
             <span>•</span>
             <button
-              onClick={() => setActiveTab('epg')}
+              onClick={() => setActiveTab('channels')}
               className="hover:text-emerald-400 transition-colors"
             >
-              تحميل EPG
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setActiveTab('github')}
-              className="hover:text-emerald-400 transition-colors"
-            >
-              شرح GitHub
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setActiveTab('kodi')}
-              className="hover:text-emerald-400 transition-colors"
-            >
-              شرح Kodi
+              عرض وتصفية القنوات
             </button>
           </div>
 
           <p className="text-slate-500 text-[11px] flex items-center gap-1">
-            تم التطوير بحب للخدمات التلفزيونية العربية على Kodi 2026
+            تم التطوير للخدمات التلفزيونية العربية المباشرة 2026
           </p>
         </div>
       </footer>
