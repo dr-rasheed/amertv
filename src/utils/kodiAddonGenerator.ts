@@ -208,7 +208,7 @@ def load_database():
             with open(db_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            xbmc.log(f"[{ADDON_ID}] Error reading local DB: {e}", xbmc.LOGERROR)
+            xbmc.log(f"[{ADDON_ID}] Error reading local DB: {e}")
 
     # 3. Fallback Embedded Database
     return EMBEDDED_DATABASE
@@ -230,9 +230,9 @@ def check_and_update_db(db_path):
             if should_update:
                 with open(db_path, 'w', encoding='utf-8') as f:
                     json.dump(remote_data, f, ensure_ascii=False, indent=2)
-                xbmcgui.Dialog().notification("AmerTV Repository", "تم تحديث مكتبة الأفلام والمسلسلات بنجاح!", xbmcgui.NOTIFICATION_INFO, 3000)
+                xbmcgui.Dialog().notification("AmerTV Repository", "تم تحديث مكتبة الأفلام والمسلسلات بنجاح!", 'info', 3000)
     except Exception as e:
-        xbmc.log(f"[{ADDON_ID}] Online DB sync skipped: {e}", xbmc.LOGINFO)
+        xbmc.log(f"[{ADDON_ID}] Online DB sync skipped: {e}")
 
 # ------------------------------------------------------------------------------
 # ROUTING & UI HELPERS
@@ -249,14 +249,23 @@ def get_params():
                 param[split[0]] = urllib.parse.unquote_plus(split[1])
     return param
 
+def set_video_info(li, title, plot=''):
+    if hasattr(li, 'getVideoInfoTag'):
+        info = li.getVideoInfoTag()
+        info.setTitle(title)
+        if plot:
+            info.setPlot(plot)
+    else:
+        li.setInfo('video', {'title': title, 'plot': plot})
+
 def add_folder(name, mode, url='', icon='', plot='', category=''):
     params = {'mode': mode, 'url': url, 'name': name, 'category': category}
     target = f"{BASE_URL}?{urllib.parse.urlencode(params)}"
     li = xbmcgui.ListItem(label=name)
     if icon:
         li.setArt({'thumb': icon, 'icon': icon, 'poster': icon})
-    if plot:
-        li.setInfo('video', {'plot': plot, 'title': name})
+    if plot or name:
+        set_video_info(li, name, plot)
     xbmcplugin.addDirectoryItem(handle=HANDLE, url=target, listitem=li, isFolder=True)
 
 def add_video_item(name, mode, item_id='', season_num=0, ep_num=0, icon='', plot=''):
@@ -271,8 +280,9 @@ def add_video_item(name, mode, item_id='', season_num=0, ep_num=0, icon='', plot
     li = xbmcgui.ListItem(label=name)
     if icon:
         li.setArt({'thumb': icon, 'icon': icon, 'poster': icon})
-    if plot:
-        li.setInfo('video', {'plot': plot, 'title': name})
+    if plot or name:
+        set_video_info(li, name, plot)
+    li.setProperty('IsPlayable', 'true')
     xbmcplugin.addDirectoryItem(handle=HANDLE, url=target, listitem=li, isFolder=False)
 
 # ------------------------------------------------------------------------------
@@ -323,7 +333,7 @@ def view_seasons(item_id):
     data = load_database()
     item = next((i for i in data.get('items', []) if i.get('id') == item_id), None)
     if not item or 'seasons' not in item:
-        xbmcgui.Dialog().notification("خطأ", "لم يتم العثور على مواسم لهذا المسلسل", xbmcgui.NOTIFICATION_WARNING)
+        xbmcgui.Dialog().notification("خطأ", "لم يتم العثور على مواسم لهذا المسلسل", 'warning')
         return
 
     for season in item.get('seasons', []):
@@ -360,7 +370,7 @@ def view_episodes(season_payload):
 def resolve_and_play(sources, title_prefix="", next_episode_callback=None):
     """ عرض قائمة السيرفرات والمصادر المتاحة واختيار أحدها للتشغيل """
     if not sources:
-        xbmcgui.Dialog().notification("عفواً", "لا توجد مصادر بث متاحة لهذا العمل", xbmcgui.NOTIFICATION_ERROR)
+        xbmcgui.Dialog().notification("عفواً", "لا توجد مصادر بث متاحة لهذا العمل", 'error')
         return
 
     # إنشاء قائمة الاختيارات للمستخدم (اسم السيرفر + الجودة)
@@ -383,7 +393,7 @@ def resolve_and_play(sources, title_prefix="", next_episode_callback=None):
 
     # إنشاء مشغل كودي
     listitem = xbmcgui.ListItem(path=stream_url)
-    listitem.setInfo('video', {'title': title_prefix})
+    set_video_info(listitem, title_prefix)
     
     player = xbmc.Player()
     xbmcplugin.setResolvedUrl(HANDLE, True, listitem)
@@ -399,7 +409,7 @@ def resolve_and_play(sources, title_prefix="", next_episode_callback=None):
                 total_time = player.getTotalTime()
                 curr_time = player.getTime()
                 if total_time > 0 and (total_time - curr_time) <= 8:
-                    xbmcgui.Dialog().notification("AmerTV AutoNext", "جاري تجهيز الحلقة التالية...", xbmcgui.NOTIFICATION_INFO, 4000)
+                    xbmcgui.Dialog().notification("AmerTV AutoNext", "جاري تجهيز الحلقة التالية...", 'info', 4000)
                     time.sleep(4)
                     next_episode_callback()
                     break

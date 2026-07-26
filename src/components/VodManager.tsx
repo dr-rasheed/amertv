@@ -246,23 +246,20 @@ export const VodManager: React.FC = () => {
       // Generate all files
       log("جاري توليد ملفات المستودع محلياً...");
       
-      const rawBaseUrl = `https://raw.githubusercontent.com/${githubRepo}/${actualBranch}`;
-      const deployConfig = { ...addonConfig, repoUrl: rawBaseUrl };
-      
-      const repoId = `repository.${deployConfig.addonId.replace('plugin.video.', '')}`;
-      const addonsXmlStr = generateAddonsXml(deployConfig);
+      const repoId = `repository.${addonConfig.addonId.replace('plugin.video.', '')}`;
+      const addonsXmlStr = generateAddonsXml(addonConfig);
       const addonsXmlMd5 = md5(addonsXmlStr);
-      const indexHtmlStr = generateIndexHtml(deployConfig);
+      const indexHtmlStr = generateIndexHtml(addonConfig);
       
       const sortedItems = [...dbItems].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
       const jsonDbStr = JSON.stringify({
-        version: deployConfig.dbVersion,
+        version: addonConfig.dbVersion,
         updatedAt: new Date().toISOString(),
         items: sortedItems
       }, null, 2);
 
-      const repoZipBlob = await createRepositoryZipBlob(deployConfig);
-      const pluginZipBlob = await createPluginZipBlob(deployConfig, dbItems);
+      const repoZipBlob = await createRepositoryZipBlob(addonConfig);
+      const pluginZipBlob = await createPluginZipBlob(addonConfig, dbItems);
 
       // Upload them sequentially
       await uploadFile('addons.xml', addonsXmlStr);
@@ -326,10 +323,8 @@ export const VodManager: React.FC = () => {
   const handleDownloadRepoZip = async () => {
     try {
       setIsGeneratingZip(true);
-      const rawBaseUrl = `https://raw.githubusercontent.com/${githubRepo}/main`;
-      const downloadConfig = { ...addonConfig, repoUrl: rawBaseUrl };
       
-      const zipBlob = await createRepositoryZipBlob(downloadConfig);
+      const zipBlob = await createRepositoryZipBlob(addonConfig);
       const url = URL.createObjectURL(zipBlob);
       const a = document.createElement('a');
       a.href = url;
@@ -365,10 +360,8 @@ export const VodManager: React.FC = () => {
   const handleDownloadFullReleaseBundleZip = async () => {
     try {
       setIsGeneratingZip(true);
-      const rawBaseUrl = `https://raw.githubusercontent.com/${githubRepo}/main`;
-      const downloadConfig = { ...addonConfig, repoUrl: rawBaseUrl };
       
-      const zipBlob = await createFullRepositoryReleaseBundleZipBlob(downloadConfig, dbItems);
+      const zipBlob = await createFullRepositoryReleaseBundleZipBlob(addonConfig, dbItems);
       const url = URL.createObjectURL(zipBlob);
       const a = document.createElement('a');
       a.href = url;

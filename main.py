@@ -12,17 +12,17 @@ import urllib.parse
 import json
 import time
 import re
-import xbmc
-import xbmcgui
-import xbmcplugin
-import xbmcvfs
+#import xbmc
+#import xbmcgui
+#import xbmcplugin
+#import xbmcvfs
 import requests
 from bs4 import BeautifulSoup
 
 HANDLE = int(sys.argv[1])
 BASE_URL = sys.argv[0]
 ADDON_ID = "plugin.video.amertv"
-REMOTE_DB_URL = "https://dr-rasheed.github.io/amertv/media_database.json"
+REMOTE_DB_URL = "https://raw.githubusercontent.com/dr-rasheed/amertv/main/media_database.json"
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -287,11 +287,8 @@ def play_episode_handler(item_id, season_num, ep_num):
 # ------------------------------------------------------------------------------
 # EMBEDDED FALLBACK DATABASE
 # ------------------------------------------------------------------------------
-EMBEDDED_DATABASE = json.loads(r"""{
-  "version": "1",
-  "updatedAt": "2026-07-26T20:17:21.619Z",
-  "items": []
-}""")
+import base64
+EMBEDDED_DATABASE = json.loads(base64.b64decode("eyJ2ZXJzaW9uIjoxLCJ1cGRhdGVkQXQiOiIyMDI2LTA3LTI2VDIwOjI2OjA5LjMyNVoiLCJpdGVtcyI6W119").decode('utf-8'))
 
 # ------------------------------------------------------------------------------
 # MAIN ENTRYPOINT & ROUTER
