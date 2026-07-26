@@ -103,10 +103,44 @@ export const ChannelManager: React.FC<ChannelManagerProps> = ({
     setTimeout(() => setCopiedAll(false), 2000);
   };
 
+  const [isSyncingIptvOrg, setIsSyncingIptvOrg] = useState<boolean>(false);
+  const [syncMessage, setSyncMessage] = useState<string>('');
+
+  const handleSyncIptvOrg = async () => {
+    setIsSyncingIptvOrg(true);
+    setSyncMessage('');
+    try {
+      const res = await fetch('/api/iptvorg');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.channels)) {
+        setChannels(data.channels);
+        setSyncMessage(`تم استيراد ومزامنة ${data.totalChannels} قناة عربية من iptv-org بنجاح!`);
+        setTimeout(() => setSyncMessage(''), 5000);
+      } else {
+        alert('تعذر استيراد قائمة iptv-org، سيتم استخدام القنوات المدمجة.');
+      }
+    } catch (err) {
+      alert('حدث خطأ أثناء الاتصال بسيرفر iptv-org.');
+    } finally {
+      setIsSyncingIptvOrg(false);
+    }
+  };
+
   const natGeoChannel = channels.find((c) => c.id === 'natgeo-abudhabi');
+  const natGeoWildChannel = channels.find((c) => c.id === 'natgeo-wild');
 
   return (
     <div className="space-y-6">
+      {/* Sync Message Alert */}
+      {syncMessage && (
+        <div className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between animate-fadeIn">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-emerald-400" />
+            <span>{syncMessage}</span>
+          </div>
+        </div>
+      )}
+
       {/* Featured National Geographic Hero Banner */}
       {natGeoChannel && (
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-950 via-slate-900 to-slate-900 border border-amber-500/30 p-6 sm:p-8 shadow-2xl">
@@ -122,26 +156,37 @@ export const ChannelManager: React.FC<ChannelManagerProps> = ({
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="bg-amber-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">
-                    القناة الأكثر طلباً 🌟
+                    القنوات الوثائقية الأكثر طلباً 🌟
                   </span>
                   <span className="text-amber-400 text-xs font-semibold">بث مباشر عالي الدقة FHD</span>
                 </div>
-                <h2 className="text-2xl font-black text-white">{natGeoChannel.name}</h2>
+                <h2 className="text-2xl font-black text-white">{natGeoChannel.name} &amp; Nat Geo Wild</h2>
                 <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-xl leading-relaxed">
-                  تم إدراج رابط البث المباشر الرسمي لشاشة ناشيونال جيوغرافيك أبوظبي وتجهيز بيانات الدليل الإلكتروني EPG الخاص بها ليعمل تلقائياً وبأعلى دقة بدون تقطيع على Kodi IPTV Simple Client.
+                  تم تضمين البث المباشر الرسمي لقنوات ناشيونال جيوغرافيك (أبوظبي و Wild) وتنسيق روابطها وبيانات الـ EPG لتكون متوافقة 100% مع كودي ومع معايير iptv-org المعتمدة.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
               <button
                 id="test-natgeo-hero-btn"
                 onClick={() => onPlayChannel(natGeoChannel)}
-                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
+                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
               >
                 <Tv className="w-4 h-4" />
-                <span>اختبار تشغيل ناشيونال جيوغرافيك</span>
+                <span>تشغيل ناشيونال جيوغرافيك</span>
               </button>
+
+              {natGeoWildChannel && (
+                <button
+                  id="test-natgeo-wild-btn"
+                  onClick={() => onPlayChannel(natGeoWildChannel)}
+                  className="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-4 py-2.5 rounded-xl border border-amber-500/40 text-xs sm:text-sm flex items-center gap-2 transition-all"
+                >
+                  <Compass className="w-4 h-4" />
+                  <span>Nat Geo Wild</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -163,7 +208,17 @@ export const ChannelManager: React.FC<ChannelManagerProps> = ({
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
+            <button
+              id="sync-iptv-org-btn"
+              onClick={handleSyncIptvOrg}
+              disabled={isSyncingIptvOrg}
+              className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 transition-colors"
+            >
+              <RefreshCcw className={`w-4 h-4 ${isSyncingIptvOrg ? 'animate-spin' : ''}`} />
+              <span>{isSyncingIptvOrg ? 'جاري الاستيراد...' : 'دمج قنوات iptv-org المباشرة'}</span>
+            </button>
+
             <button
               id="open-add-channel-modal"
               onClick={() => setShowAddModal(true)}
@@ -179,7 +234,7 @@ export const ChannelManager: React.FC<ChannelManagerProps> = ({
               className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition-colors"
             >
               {copiedAll ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-              <span>نسخ القوائم المفلترة</span>
+              <span>نسخ M3U المفلترة</span>
             </button>
           </div>
         </div>
