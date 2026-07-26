@@ -150,7 +150,7 @@
   </programme>
 
   <!-- NASA TV -->
-  <programme start="20260726000000 +0000" stop="20260727000000 +0000" channel="NASATV.us">
+  <programme start="20260726000000 +0000" stop="20260726000000 +0000" channel="NASATV.us">
     <title lang="en">NASA Live Earth Views & Space Station Missions</title>
     <desc lang="en">Live coverage from ISS, Artemis program updates, and deep space exploration.</desc>
     <category lang="en">Space & Science</category>
