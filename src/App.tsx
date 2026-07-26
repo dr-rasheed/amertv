@@ -1,92 +1,48 @@
-import React, { useState } from 'react';
-import { Channel } from './types';
-import { INITIAL_CHANNELS } from './data/channels';
-import { Navbar, ActiveTab } from './components/Navbar';
-import { SmartWizardView } from './components/SmartWizardView';
-import { ChannelManager } from './components/ChannelManager';
+import React from 'react';
 import { VodManager } from './components/VodManager';
-import { PlayerModal } from './components/PlayerModal';
 import { Tv } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('wizard');
-  const [channels, setChannels] = useState<Channel[]>(INITIAL_CHANNELS);
-  const [favorites, setFavorites] = useState<string[]>(['natgeo-abudhabi', 'aljazeera-news', 'ad-sports-1']);
-  const [playingChannel, setPlayingChannel] = useState<Channel | null>(null);
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 dir-rtl">
       {/* Top Navbar Header */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        channelCount={channels.length}
-      />
+      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <Tv className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-slate-100 tracking-tight">Kodi VOD Manager</h1>
+                <p className="text-xs text-emerald-400 font-medium">إدارة مكتبة الأفلام والمسلسلات</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'wizard' && (
-          <SmartWizardView
-            channels={channels}
-            setChannels={setChannels}
-            onPlayChannel={(channel) => setPlayingChannel(channel)}
-          />
-        )}
-
-        {activeTab === 'channels' && (
-          <ChannelManager
-            channels={channels}
-            setChannels={setChannels}
-            onPlayChannel={(channel) => setPlayingChannel(channel)}
-            favorites={favorites}
-            setFavorites={setFavorites}
-          />
-        )}
-
-        {activeTab === 'vod' && (
-          <VodManager />
-        )}
+      <main className="flex-1 w-full flex flex-col">
+        <VodManager />
       </main>
 
-      {/* Stream Test Player Modal */}
-      <PlayerModal
-        channel={playingChannel}
-        onClose={() => setPlayingChannel(null)}
-      />
-
       {/* App Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800/80 py-8 text-xs text-slate-400 mt-12">
+      <footer className="bg-slate-900 border-t border-slate-800/80 py-8 text-xs text-slate-400 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-right">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
               <Tv className="w-4 h-4" />
             </div>
             <div>
-              <p className="font-bold text-slate-200 text-sm">Kodi Arabic IPTV Manager</p>
+              <p className="font-bold text-slate-200 text-sm">Kodi VOD Manager</p>
               <p className="text-[11px] text-slate-500">
-                تطبيق مبسط لإدارة وتحديث قنوات Kodi IPTV والرفع المباشر على GitHub
+                تطبيق متكامل لإنشاء وإدارة إضافات ومستودعات Kodi
               </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-3 text-slate-400">
-            <button
-              onClick={() => setActiveTab('wizard')}
-              className="hover:text-emerald-400 transition-colors"
-            >
-              معالج التحديث
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setActiveTab('channels')}
-              className="hover:text-emerald-400 transition-colors"
-            >
-              عرض وتصفية القنوات
-            </button>
-          </div>
-
           <p className="text-slate-500 text-[11px] flex items-center gap-1">
-            تم التطوير للخدمات التلفزيونية العربية المباشرة 2026
+            الإصدار الحديث 2026
           </p>
         </div>
       </footer>
