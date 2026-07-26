@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tv generator-info-name="AmerTV EPG Generator" generator-info-url="https://dr-rasheed.github.io/amertv/">
+  <channel id="NatGeoAbuDhabi.ae">
+    <display-name lang="ar">ناشيونال جيوغرافيك أبوظبي HD</display-name>
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/National_Geographic_Abu_Dhabi_logo.png/320px-National_Geographic_Abu_Dhabi_logo.png" />
+  </channel>
+  <channel id="AlJazeera.qa">
+    <display-name lang="ar">الجزيرة الإخبارية HD</display-name>
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Al_Jazeera_Channel_logo.svg/320px-Al_Jazeera_Channel_logo.svg.png" />
+  </channel>
+  <channel id="AlArabiya.sa">
+    <display-name lang="ar">العربية HD</display-name>
+    <icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Al_Arabiya_Logo.svg/320px-Al_Arabiya_Logo.svg.png" />
+  </channel>
+</tv>

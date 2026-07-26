@@ -1,0 +1,96 @@
+#EXTM3U refresh="43200" x-tvg-url="https://dr-rasheed.github.io/amertv/ar.xml"
+#####################################################################
+# Arabic IPTV Playlist for Kodi PVR IPTV Simple Client
+# Auto-generated & Optimized for High Quality Streams
+# Features: NatGeo Abu Dhabi, NatGeo Wild, Quest Arabiya, News, Sports, Series
+#####################################################################
+#EXTINF:-1 tvg-id="NatGeoAbuDhabi.ae" tvg-name="NatGeoAbuDhabi.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/National_Geographic_Abu_Dhabi_logo.png/320px-National_Geographic_Abu_Dhabi_logo.png" group-title="الوثائقيات والمعرفة",ناشيونال جيوغرافيك أبوظبي HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://admdn2.admedia.ae/ch1/ngad/playlist.m3u8
+#EXTINF:-1 tvg-id="NatGeoWild.ae" tvg-name="NatGeoWild.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nat_Geo_Wild_logo.svg/320px-Nat_Geo_Wild_logo.svg.png" group-title="الوثائقيات والمعرفة",ناشيونال جيوغرافيك وايلد HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://admdn1.admedia.ae/ch3/ngwild/playlist.m3u8
+#EXTINF:-1 tvg-id="QuestArabiya.ae" tvg-name="QuestArabiya.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Quest_Arabiya_logo.png/320px-Quest_Arabiya_logo.png" group-title="الوثائقيات والمعرفة",كويست عربية Quest Arabiya HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://admdn2.admedia.ae/ch2/quest/playlist.m3u8
+#EXTINF:-1 tvg-id="AlJazeeraDocumentary.qa" tvg-name="AlJazeeraDocumentary.qa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Al_Jazeera_Documentary_Channel_logo.svg/320px-Al_Jazeera_Documentary_Channel_logo.svg.png" group-title="الوثائقيات والمعرفة",الجزيرة الوثائقية HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://live-hls-web-ajd.getaj.net/AJD/index.m3u8
+#EXTINF:-1 tvg-id="AlAraby2.qa" tvg-name="AlAraby2.qa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/AlAraby2_Logo.png/320px-AlAraby2_Logo.png" group-title="الوثائقيات والمعرفة",العربي 2 HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://live.alaraby.com/hls/alaraby2/index.m3u8
+#EXTINF:-1 tvg-id="AlJazeera.qa" tvg-name="AlJazeera.qa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Al_Jazeera_Channel_logo.svg/320px-Al_Jazeera_Channel_logo.svg.png" group-title="الأخبار والمستجدات",الجزيرة الإخبارية HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://live-hls-web-aja.getaj.net/AJA/index.m3u8
+#EXTINF:-1 tvg-id="AlArabiya.sa" tvg-name="AlArabiya.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Al_Arabiya_Logo.svg/320px-Al_Arabiya_Logo.svg.png" group-title="الأخبار والمستجدات",العربية HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://live.alarabiya.net/alarabiya/live/index.m3u8
+#EXTINF:-1 tvg-id="AlHadath.sa" tvg-name="AlHadath.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Al_Hadath_Logo.png/320px-Al_Hadath_Logo.png" group-title="الأخبار والمستجدات",الحدث HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://live.alhadath.net/alhadath/live/index.m3u8
+#EXTINF:-1 tvg-id="SkyNewsArabia.ae" tvg-name="SkyNewsArabia.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Sky_News_Arabia_logo.svg/320px-Sky_News_Arabia_logo.svg.png" group-title="الأخبار والمستجدات",سكاي نيوز عربية HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://snahls-vh.akamaihd.net/i/snahls_1@82025/master.m3u8
+#EXTINF:-1 tvg-id="BBCArabic.uk" tvg-name="BBCArabic.uk" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/BBC_News_Arabic.svg/320px-BBC_News_Arabic.svg.png" group-title="الأخبار والمستجدات",بي بي سي عربي BBC Arabic HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://vs-hls-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_arabic_tv/pc_hd_v1.m3u8
+#EXTINF:-1 tvg-id="TRTArabic.tr" tvg-name="TRTArabic.tr" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/TRT_Arabi_Logo.svg/320px-TRT_Arabi_Logo.svg.png" group-title="الأخبار والمستجدات",تي آر تي عربي TRT Arabi HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://tv-trtarabi.medya.trt.com.tr/master.m3u8
+#EXTINF:-1 tvg-id="DWArabic.de" tvg-name="DWArabic.de" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Deutsche_Welle_logo.svg/320px-Deutsche_Welle_logo.svg.png" group-title="الأخبار والمستجدات",دي دبليو عربية DW Arabic HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8
+#EXTINF:-1 tvg-id="France24Arabic.fr" tvg-name="France24Arabic.fr" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/France_24_Arabic_logo.svg/320px-France_24_Arabic_logo.svg.png" group-title="الأخبار والمستجدات",فرانس 24 عربية France 24 HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://static.france24.com/live/F24_AR_HI_HLS/live_tv.m3u8
+#EXTINF:-1 tvg-id="RTArabic.ru" tvg-name="RTArabic.ru" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/RT_Arabic_Logo.svg/320px-RT_Arabic_Logo.svg.png" group-title="الأخبار والمستجدات",روسيا اليوم RT Arabic HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://rt-arabic.medialb.com/live/rtarabic/playlist.m3u8
+#EXTINF:-1 tvg-id="ADSports1.ae" tvg-name="ADSports1.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Abu_Dhabi_Sports_logo.png/320px-Abu_Dhabi_Sports_logo.png" group-title="الرياضة",أبوظبي الرياضية 1 HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://admdn2.admedia.ae/ch1/adsports1/playlist.m3u8
+#EXTINF:-1 tvg-id="ADSports2.ae" tvg-name="ADSports2.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Abu_Dhabi_Sports_logo.png/320px-Abu_Dhabi_Sports_logo.png" group-title="الرياضة",أبوظبي الرياضية 2 HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://admdn1.admedia.ae/ch2/adsports2/playlist.m3u8
+#EXTINF:-1 tvg-id="DubaiSports1.ae" tvg-name="DubaiSports1.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dubai_Sports_logo.png/320px-Dubai_Sports_logo.png" group-title="الرياضة",دبي الرياضية 1 HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://dmi.ae/dubaisports/dubaisports1.m3u8
+#EXTINF:-1 tvg-id="AlKass1.qa" tvg-name="AlKass1.qa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Al_Kass_Sports_Channels_logo.png/320px-Al_Kass_Sports_Channels_logo.png" group-title="الرياضة",الكأس 1 الرياضية HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://alkass.net/live/alkass1.m3u8
+#EXTINF:-1 tvg-id="KuwaitSports.kw" tvg-name="KuwaitSports.kw" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Kuwait_TV_Sports_logo.png/320px-Kuwait_TV_Sports_logo.png" group-title="الرياضة",الكويت الرياضية HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://ktv.gov.kw/hls/ktsports.m3u8
+#EXTINF:-1 tvg-id="OmanSports.om" tvg-name="OmanSports.om" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Oman_TV_Sports_logo.png/320px-Oman_TV_Sports_logo.png" group-title="الرياضة",عُمان الرياضية HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://part.gov.om/hls/omansports.m3u8
+#EXTINF:-1 tvg-id="MBC1.sa" tvg-name="MBC1.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/MBC1_logo.svg/320px-MBC1_logo.svg.png" group-title="الترفيه والمسلسلات",MBC 1 HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://shahid.mbc.net/hls/mbc1/index.m3u8
+#EXTINF:-1 tvg-id="MBCDrama.sa" tvg-name="MBCDrama.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/MBC_Drama_logo.svg/320px-MBC_Drama_logo.svg.png" group-title="الترفيه والمسلسلات",MBC دراما HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://shahid.mbc.net/hls/mbcdrama/index.m3u8
+#EXTINF:-1 tvg-id="DubaiTV.ae" tvg-name="DubaiTV.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dubai_TV_Logo.png/320px-Dubai_TV_Logo.png" group-title="الترفيه والمسلسلات",دبي HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://dmi.ae/dubaitv/dubaitv.m3u8
+#EXTINF:-1 tvg-id="SaudiTV1.sa" tvg-name="SaudiTV1.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Saudi_TV1_logo.png/320px-Saudi_TV1_logo.png" group-title="الترفيه والمسلسلات",القناة السعودية الأولى HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://sbc.sa/hls/sauditv1.m3u8
+#EXTINF:-1 tvg-id="QuranTV.sa" tvg-name="QuranTV.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Saudi_Quran_TV_logo.png/320px-Saudi_Quran_TV_logo.png" group-title="القرآن الكريم والسيَر",قناة القرآن الكريم مكة المكرمة HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://sbc.sa/hls/quran.m3u8
+#EXTINF:-1 tvg-id="SunnahTV.sa" tvg-name="SunnahTV.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Saudi_Sunnah_TV_logo.png/320px-Saudi_Sunnah_TV_logo.png" group-title="القرآن الكريم والسيَر",قناة السنة النبوية المدينة المنورة HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://sbc.sa/hls/sunnah.m3u8
+#EXTINF:-1 tvg-id="MajdQuran.sa" tvg-name="MajdQuran.sa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Al_Majd_TV_Network_Logo.png/320px-Al_Majd_TV_Network_Logo.png" group-title="القرآن الكريم والسيَر",قناة المجد للقرآن الكريم HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://almajd.tv/hls/quran.m3u8
+#EXTINF:-1 tvg-id="Spacetoon.ae" tvg-name="Spacetoon.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Spacetoon_logo.svg/320px-Spacetoon_logo.svg.png" group-title="الأطفال والأسرة",سبيستون Spacetoon HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://spacetoon.com/hls/live.m3u8
+#EXTINF:-1 tvg-id="MajidKids.ae" tvg-name="MajidKids.ae" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Majid_Kids_TV_logo.png/320px-Majid_Kids_TV_logo.png" group-title="الأطفال والأسرة",قناة ماجد للأطفال Majid Kids HD
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://admdn1.admedia.ae/ch2/majid/playlist.m3u8
+#EXTINF:-1 tvg-id="Baraem.qa" tvg-name="Baraem.qa" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Baraem_logo.png/320px-Baraem_logo.png" group-title="الأطفال والأسرة",براعم Baraem TV
+#EXTVLCOPT:http-user-agent=Kodi/21.0 (IPTV Simple Client)
+https://baraem.tv/hls/live.m3u8
