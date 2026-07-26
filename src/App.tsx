@@ -3,6 +3,7 @@ import { Channel } from './types';
 import { INITIAL_CHANNELS } from './data/channels';
 import { Navbar, ActiveTab } from './components/Navbar';
 import { ChannelManager } from './components/ChannelManager';
+import { StreamTesterView } from './components/StreamTesterView';
 import { M3uGeneratorView } from './components/M3uGeneratorView';
 import { EpgGeneratorView } from './components/EpgGeneratorView';
 import { GithubGuideView } from './components/GithubGuideView';
@@ -38,11 +39,19 @@ export default function App() {
           />
         )}
 
+        {activeTab === 'tester' && (
+          <StreamTesterView
+            channels={channels}
+            setChannels={setChannels}
+            onPlayChannel={(channel) => setPlayingChannel(channel)}
+          />
+        )}
+
         {activeTab === 'm3u' && <M3uGeneratorView channels={channels} />}
 
         {activeTab === 'epg' && <EpgGeneratorView channels={channels} />}
 
-        {activeTab === 'github' && <GithubGuideView />}
+        {activeTab === 'github' && <GithubGuideView channels={channels} />}
 
         {activeTab === 'kodi' && <KodiGuideView />}
 
