@@ -4,6 +4,7 @@ import { INITIAL_CHANNELS } from './data/channels';
 import { Navbar, ActiveTab } from './components/Navbar';
 import { SmartWizardView } from './components/SmartWizardView';
 import { ChannelManager } from './components/ChannelManager';
+import { VodManager } from './components/VodManager';
 import { PlayerModal } from './components/PlayerModal';
 import { Tv } from 'lucide-react';
 
@@ -40,6 +41,10 @@ export default function App() {
             favorites={favorites}
             setFavorites={setFavorites}
           />
+        )}
+
+        {activeTab === 'vod' && (
+          <VodManager />
         )}
       </main>
 

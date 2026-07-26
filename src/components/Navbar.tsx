@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tv, FileText, Calendar, Github, MonitorPlay, Link2, Sparkles, Activity, Zap } from 'lucide-react';
 
-export type ActiveTab = 'wizard' | 'channels';
+export type ActiveTab = 'wizard' | 'channels' | 'vod';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -13,6 +13,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, channel
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode; badge?: string }[] = [
     { id: 'wizard', label: 'معالج التحديث والنشر المباشر', icon: <Zap className="w-4 h-4 text-amber-400" />, badge: 'الموصى به' },
     { id: 'channels', label: 'القنوات والتصفية', icon: <Tv className="w-4 h-4" />, badge: `${channelCount}` },
+    { id: 'vod', label: 'مكتبة الأفلام والمسلسلات', icon: <Sparkles className="w-4 h-4 text-purple-400" />, badge: 'جديد' },
   ];
 
   return (
