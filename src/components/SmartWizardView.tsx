@@ -135,44 +135,69 @@ export const SmartWizardView: React.FC<SmartWizardViewProps> = ({
     }
   };
 
-  // 2. Batch Stream Tester
+  // Helper for real stream connectivity check
+  const testStreamUrl = async (url: string, timeoutMs: number = 3500): Promise<boolean> => {
+    if (!url || !url.startsWith('http')) return false;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      // Attempt fetching first chunk or headers
+      await fetch(url, {
+        method: 'GET',
+        mode: 'no-cors',
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+      return true;
+    } catch (err) {
+      clearTimeout(timer);
+      return false;
+    }
+  };
+
+  // 2. Batch Stream Tester with REAL Network Verification
   const handleTestAllStreams = async () => {
     if (channels.length === 0) return;
     setIsTestingStreams(true);
     setErrorLog(null);
     setProcessProgress(0);
-    addLog('⚡ بدء فحص حالة وتوفر جودة البث الحي للقنوات...');
+    addLog('⚡ بدء فحص حالة الاتصال وبث الخوادم المباشرة للقنوات...');
 
-    let testedCount = 0;
+    let onlineCount = 0;
+    let fallbackCount = 0;
+    let offlineCount = 0;
     const total = channels.length;
     const updatedChannels = [...channels];
 
     for (let i = 0; i < total; i++) {
       const channel = updatedChannels[i];
-      setCurrentActionItem(`جاري فحص بث: ${channel.name}...`);
+      setCurrentActionItem(`جاري فحص اتصال سيرفر البث لقناة: ${channel.name}...`);
       setProcessProgress(Math.round(((i + 1) / total) * 100));
 
-      // Simulate stream network ping test
-      try {
-        const isOk = !channel.url.includes('broken');
-        if (isOk) {
-          addLog(`✅ قناة شغالّة: ${channel.name}`);
-        } else if (channel.backupUrl) {
-          channel.url = channel.backupUrl;
-          addLog(`🔄 تم التبديل إلى الرابط الاحتياطي لقناة: ${channel.name}`);
-        }
-      } catch (e) {
-        addLog(`⚠️ متعثرة: ${channel.name}`);
+      const startTime = Date.now();
+      const primaryOk = await testStreamUrl(channel.url);
+      const latency = Date.now() - startTime;
+
+      if (primaryOk) {
+        onlineCount++;
+        addLog(`✅ قناة شغالّة (${latency}ms): ${channel.name}`);
+      } else if (channel.backupUrl && (await testStreamUrl(channel.backupUrl))) {
+        fallbackCount++;
+        channel.url = channel.backupUrl;
+        addLog(`🔄 تم التبديل للسيرفر الاحتياطي بنجاح: ${channel.name}`);
+      } else {
+        offlineCount++;
+        addLog(`⚠️ متعثرة أو تحظر العرض المباشر: ${channel.name}`);
       }
 
-      testedCount++;
-      await new Promise((r) => setTimeout(r, 80));
+      await new Promise((r) => setTimeout(r, 60));
     }
 
     setChannels(updatedChannels);
     setIsTestingStreams(false);
-    setCurrentActionItem(`تم فحص جميع القنوات (${testedCount} قناة) بنجاح.`);
-    addLog(`🎉 اكتمل فحص البث المباشر لجميع القنوات!`);
+    setCurrentActionItem(`تم فحص جميع القنوات. الشغالة: ${onlineCount + fallbackCount} من أصل ${total}.`);
+    addLog(`🎉 اكتمل الفحص الشامل! الشغالة: ${onlineCount + fallbackCount} - المتعثرة: ${offlineCount}`);
   };
 
   // 3. Push to GitHub

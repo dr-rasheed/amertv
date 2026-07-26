@@ -1,32 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بوابة AmerTV IPTV المباشرة</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-4 flex flex-col items-center justify-center font-sans">
-  <div class="max-w-2xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
-    <div class="text-center space-y-2">
-      <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20">
-        ✨ مستودع قنوات M3U & EPG المباشر الشغال
-      </span>
-      <h1 class="text-2xl font-black text-white">AmerTV IPTV Playlist Server</h1>
-      <p class="text-slate-400 text-xs sm:text-sm">روابط التشغيل المباشرة المحدثة تلقائياً لبرنامج Kodi و IPTV Simple Client</p>
-    </div>
-
-    <div class="space-y-3 bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
-      <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-        <span class="text-emerald-400 font-bold">رابط قائمة M3U:</span>
-        <p class="font-mono text-slate-300 break-all select-all">https://dr-rasheed.github.io/amertv/ar.m3u</p>
-      </div>
-      <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-        <span class="text-amber-400 font-bold">رابط دليل البرامج EPG:</span>
-        <p class="font-mono text-slate-300 break-all select-all">https://raw.githubusercontent.com/dr-rasheed/amertv/main/ar.xml</p>
-      </div>
-    </div>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>مُولد وإدارة M3U & EPG لـ Kodi</title>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
+

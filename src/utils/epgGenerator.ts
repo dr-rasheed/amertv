@@ -7,44 +7,73 @@ interface SampleProgramTemplate {
   durationMinutes: number;
 }
 
-const PROGRAM_TEMPLATES: Record<string, SampleProgramTemplate[]> = {
+// Custom channel-specific EPG schedules
+const SPECIFIC_CHANNEL_EPG: Record<string, SampleProgramTemplate[]> = {
+  // Al Jazeera
+  'aljazeera': [
+    { title: 'نشرة الأخبار الرئيسة - حصاد اليوم', desc: 'تغطية حيّة ومباشرة لأبرز المستجدات والتطورات السياسية في المنطقة والعالم.', category: 'أخبار', durationMinutes: 60 },
+    { title: 'ما خفي أعظم - تحقيقات استقصائية', desc: 'برنامج تحقيقي يتناول كواليس وأسرار القضايا الساخنة بمستندات حصرية.', category: 'وثائقي', durationMinutes: 60 },
+    { title: 'الاتجاه المعاكس مع فيصل القاسم', desc: 'حوار ونقاش ساخن حول أبرز القضايا الخلافية والسياسية الشائكة.', category: 'حوارات', durationMinutes: 60 },
+    { title: 'بلا حدود - لقاءات خاصة', desc: 'مقابلات حصرية مع قادة وصنّاع القرار للوقوف على التطورات الجارية.', category: 'حوارات', durationMinutes: 60 },
+    { title: 'الجزيرة هذا الصباح', desc: 'مجلة صباحية متنوعة تغطي ثقافة وفنون وتكنولوجيا وأخبار مجتمعية.', category: 'منوعات', durationMinutes: 90 },
+  ],
+  // Al Arabiya
+  'alarabiya': [
+    { title: 'نشرة الرابعة الإخبارية', desc: 'متابعة ميدانية مكثفة وتغطية شاملة لكل الأحداث العربية والعالمية.', category: 'أخبار', durationMinutes: 60 },
+    { title: 'تفاعلكم مع سارة دندراوي', desc: 'استعراض لأبرز القضايا الأكثر تداولاً وتفاعلاً عبر منصات التواصل الاجتماعي.', category: 'ترفيه', durationMinutes: 45 },
+    { title: 'سجال سياسي وتحليل الحصاد', desc: 'قراءة وتحليل عميق مع نخبة من الخبراء والاستراتيجيين.', category: 'تحليل', durationMinutes: 60 },
+    { title: 'موجز رأس الساعة', desc: 'موجز سريع بآخر الأنباء والتطورات الميدانية.', category: 'أخبار', durationMinutes: 15 },
+  ],
+  // NatGeo Abu Dhabi
+  'natgeo': [
+    { title: 'تحقيقات الكوارث الجوية - الموسم 23', desc: 'سلسلة استقصائية تكشف أسرار الحوادث الجوية وكيف أدت لتغيير معايير السلامة.', category: 'وثائقي', durationMinutes: 60 },
+    { title: 'سمكة التونة العنيدة', desc: 'مغامرات صيادي الأسماك في مواجهة الأمواج العاتية والمنافسة الشرسة.', category: 'طبيعة', durationMinutes: 60 },
+    { title: 'أسرار الكون والمحيطات', desc: 'استكشاف نادٍ لأعماق البحار والمجرات السماوية بأحدث التقنيات.', category: 'علوم', durationMinutes: 60 },
+    { title: 'معارك الحيوانات الفتاكة', desc: 'صراع البقاء في أدغال أفريقيا ومواجهات بين أشرس المفترسات.', category: 'طبيعة', durationMinutes: 45 },
+  ],
+  // Saudi Quran
+  'quran': [
+    { title: 'بث مباشر - صلاة الفجر والختمة المباركة', desc: 'نقل حي ومباشر للصلوات والتلاوات الخاشعة من المسجد الحرام بمكة المكرمة.', category: 'ديني', durationMinutes: 120 },
+    { title: 'تلاوات خاشعة لكبار القراء', desc: 'استماع لأجمل التلاوات القرآنية بأصوات مشاهير قراء العالم الإسلامي.', category: 'قرآن', durationMinutes: 90 },
+    { title: 'تفسير معاني آيات الذكر الحكيم', desc: 'دروس ومحاضرات في تفسير وتدبر القرآن الكريم مع العلماء.', category: 'تفسير', durationMinutes: 60 },
+  ],
+  // Saudi Sunnah
+  'sunnah': [
+    { title: 'بث مباشر - المسجد النبوي الشريف', desc: 'نقل حي ومباشر لأروقة المسجد النبوي الشريف بالمدينة المنورة.', category: 'ديني', durationMinutes: 120 },
+    { title: 'أحاديث صحيح البخاري ومسلم', desc: 'قراءة وشرح الأحكام الفقهية والسيرة النبوية العطرة.', category: 'حديث', durationMinutes: 60 },
+  ],
+  // Spacetoon / Kids
+  'spacetoon': [
+    { title: 'أبطال الديجيتال والمغامرات', desc: 'مغامرات فرسان المستقبل في إنقاذ العالم الرقمي من الأخطار.', category: 'أطفال', durationMinutes: 30 },
+    { title: 'المحقق كونان - كوكب زمردة وأكشن', desc: 'غموض وألغاز ذكية يحاول كونان حلها لكشف أسرار الجرائم المعقدة.', category: 'أنمي', durationMinutes: 45 },
+    { title: 'أغاني وأناشيد سبيستون الكلاسيكية', desc: 'شارات وأغاني كرتون المفضل لدى جيل الشباب والأطفال.', category: 'موسيقى', durationMinutes: 30 },
+  ]
+};
+
+// Generic templates grouped by category
+const CATEGORY_TEMPLATES: Record<string, SampleProgramTemplate[]> = {
   'الوثائقيات والمعرفة': [
-    { title: 'تحقيقات الكوارث الجوية - الموسم 22', desc: 'استكشاف الأسباب الدقيقة وراء الحوادث الجوية الأكثر تعقيداً في التاريخ.', category: 'وثائقي', durationMinutes: 60 },
-    { title: 'أسرار المحيطات والكون', desc: 'جولة استكشافية فريدة في أعماق البحار والمحيطات والكائنات النادرة.', category: 'طبيعة', durationMinutes: 60 },
-    { title: 'مستكشفو الحياة البرية', desc: 'متابعة نادرة للحيوانات المفترسة في أدغال أفريقيا والقطب الشمالي.', category: 'طبيعة', durationMinutes: 45 },
-    { title: 'أعظم الإنجازات الهندسيّة', desc: 'كواليس بناء أضخم الجسور والأنفاق ونطاحات السحاب في العالم.', category: 'علوم', durationMinutes: 60 },
-    { title: 'مملكة الحيوانات الفتاكة', desc: 'نظرة مقربة عن استراتيجيات الصيد لدى أشرس الكائنات الحية.', category: 'طبيعة', durationMinutes: 45 },
+    { title: 'روائع الطبيعة والاستكشاف', desc: 'رحلة في أعماق الطبيعة العذراء والكائنات الفريدة حول العالم.', category: 'وثائقي', durationMinutes: 60 },
+    { title: 'مستكشفو التكنولوجيا والعلوم', desc: 'نظرة على أحدث الابتكارات والاكتشافات العلمية الحديثة.', category: 'علوم', durationMinutes: 45 },
+    { title: 'أسرار الحضارات القديمة', desc: 'استكشاف الآثار التاريخية والأسرار المعمارية للشعوب.', category: 'تاريخ', durationMinutes: 60 },
   ],
   'الأخبار والمستجدات': [
-    { title: 'النشرة الإخبارية الرئيسة', desc: 'تغطية شاملة لأهم الأحداث والتطورات السياسية والاقتصادية حول العالم.', category: 'أخبار', durationMinutes: 60 },
-    { title: 'حوار الأخبار وتحليل الحصاد', desc: 'مناقشات عميقة مع خبراء ومحللين سياسيين لأبرز ملفات اليوم.', category: 'حوارات', durationMinutes: 60 },
-    { title: 'موجز الأنباء والعناوين', desc: 'موجز سريع لأبرز المستجدات والتطورات الميدانية.', category: 'أخبار', durationMinutes: 15 },
-    { title: 'عالم الاقتصاد والأسواق', desc: 'قراءة في تحركات البورصة وأسعار الطاقة والعملات العالمية.', category: 'اقتصاد', durationMinutes: 45 },
+    { title: 'النشرة الإخبارية الشاملة', desc: 'تغطية ومتابعة حيّة لأبرز التطورات السياسية والحدث اليومي.', category: 'أخبار', durationMinutes: 60 },
+    { title: 'حوار المساء والتحليل الميداني', desc: 'نقاشات مع مستشارين ومحللين سياسيين حول المستجدات.', category: 'تحليل', durationMinutes: 60 },
+    { title: 'موجز الأنباء السريع', desc: 'ملخص مكثف لأهم العناوين والمستجدات على الساحة.', category: 'أخبار', durationMinutes: 15 },
   ],
   'الرياضة': [
-    { title: 'استوديو المباراة المباشرة', desc: 'تحليل تكتيكي ورصد لجاهزية الفريقين وأبرز التشكيلات المتوقعة.', category: 'رياضة', durationMinutes: 45 },
-    { title: 'البث المباشر للمباراة', desc: 'تغطية حيّة ومباشرة مع أفضل المعلقين الرياضيين.', category: 'مباشر', durationMinutes: 105 },
-    { title: 'الملخص والمجلة الرياضية', desc: 'أبرز أهداف ومهارات واستعراض نتائج دوريات اليوم.', category: 'ملخص', durationMinutes: 60 },
-    { title: 'حصاد الجولة والتحكيم', desc: 'مراجعة الحالات التحكيمية المثيرة للجدل واللقطات اللامعة.', category: 'تحليل', durationMinutes: 60 },
-  ],
-  'الترفيه والمسلسلات': [
-    { title: 'المسلسل العربي - الحلقة اليومية', desc: 'أحداث مشوقة ومفاجآت غير متوقعة في الحلقة الجديدة.', category: 'مسلسلات', durationMinutes: 60 },
-    { title: 'برنامج الترفيه وحوار النجوم', desc: 'لقاءات حصرية مع أشهر فناني وصنّاع السينما والدراما العربية.', category: 'ترفيه', durationMinutes: 90 },
-    { title: 'دراما المساء والمسلسلات التاريخية', desc: 'عروض ملحمية وسير درامية تاريخية مميزة.', category: 'دراما', durationMinutes: 60 },
+    { title: 'الاستوديو التحليلي المباشر', desc: 'قراءة تكتيكية قبل انطلاق المباريات واستعراض خطط الفرق.', category: 'رياضة', durationMinutes: 45 },
+    { title: 'البث الحي للمباراة والبطولة', desc: 'تغطية مباشرة وحصرية لأحداث المنافسة الرياضية.', category: 'مباشر', durationMinutes: 105 },
+    { title: 'حصاد الأهداف وملخص الجولة', desc: 'استعراض أجمل الأهداف والمهارات واللقطات البارزة.', category: 'ملخص', durationMinutes: 60 },
   ],
   'الأطفال والأسرة': [
-    { title: 'أبطال المستقبل والانيميشن', desc: 'مغامرات كرتونية شيقة مليئة بالقيم والتشويق والمرح للأطفال.', category: 'أطفال', durationMinutes: 30 },
-    { title: 'عالم العلوم والمبتكرين الصغار', desc: 'فقرات تفاعلية تجيب على تساؤلات الأطفال وتنمي مواهبهم.', category: 'تعليمي', durationMinutes: 45 },
-    { title: 'أغاني وأناشيد الأطفال', desc: 'أناشيد ورسومات كرتونية ممتعة ومسلية.', category: 'أغاني', durationMinutes: 30 },
+    { title: 'عالم المغامرات والكرتون', desc: 'قصص ومغامرات مسلية وممتعة للأطفال مع أبطالهم المفضلين.', category: 'أطفال', durationMinutes: 30 },
+    { title: 'برنامج المبتكرين الصغار', desc: 'تجارب علمية وأنشطة تفاعلية لتنمية مواهب الأطفال.', category: 'تعليمي', durationMinutes: 45 },
   ],
   'القرآن الكريم والسيَر': [
-    { title: 'بث مباشر صلاة اليوم وتلاوة عطرة', desc: 'نقل حي ومباشر للتلاوات والصلوات من المسجد الحرام والمسجد النبوي.', category: 'دين', durationMinutes: 90 },
-    { title: 'تفسير وآيات من الذكر الحكيم', desc: 'شرح ودراسة معاني آيات القرآن الكريم مع كبار العلماء.', category: 'تفسير', durationMinutes: 60 },
-    { title: 'قصص الأنبياء والسيرة النبوية', desc: 'محطات إيمانية من السيرة العطرة وتاريخ الإسلام.', category: 'سيرة', durationMinutes: 60 },
-  ],
-  'الأفلام والسينما': [
-    { title: 'فيلم السهرة العربي', desc: 'عرض سينمائي مميز لأحدث وأقوى الأعمال السينمائية العربية.', category: 'أفلام', durationMinutes: 120 },
-    { title: 'روائع الكلاسيكيات السينمائية', desc: 'أجمل أفلام الزمن الجميل بحودة عالية ومعدلة.', category: 'كلاسيك', durationMinutes: 105 },
+    { title: 'بث مباشر الصلوات والتلاوة العطرة', desc: 'نقل حي للصلوات والتلاوات الخاشعة والآيات المباركة.', category: 'قرآن', durationMinutes: 90 },
+    { title: 'تفسير القرآن والآداب الإسلامية', desc: 'برنامج توعوي يشرح معاني الآيات العظيمة والسيرة النبوية.', category: 'تفسير', durationMinutes: 60 },
   ]
 };
 
@@ -83,7 +112,30 @@ export function generateEpgXmlContent(channels: Channel[], daysAhead: number = 3
 
   channels.forEach((ch) => {
     const channelId = ch.tvgId || ch.id;
-    const templates = PROGRAM_TEMPLATES[ch.category] || PROGRAM_TEMPLATES['الأخبار والمستجدات'];
+    const cleanId = ch.id.toLowerCase();
+    
+    // Find matching channel specific schedule
+    let templates: SampleProgramTemplate[] | undefined;
+    for (const key in SPECIFIC_CHANNEL_EPG) {
+      if (cleanId.includes(key)) {
+        templates = SPECIFIC_CHANNEL_EPG[key];
+        break;
+      }
+    }
+
+    // Fallback to Category
+    if (!templates) {
+      templates = CATEGORY_TEMPLATES[ch.category];
+    }
+
+    // Dynamic generated schedule using channel name if no template matches
+    if (!templates || templates.length === 0) {
+      templates = [
+        { title: `البث المباشر - ${ch.name}`, desc: `متابعة حية ومباشرة للبرامج والفقرات اليومية عبر شاشة ${ch.name}.`, category: 'مباشر', durationMinutes: 120 },
+        { title: `نشرة ومتابعة أحداث ${ch.name}`, desc: `تغطية متجددة وأبرز الأخبار والتغطيات الخاصة عبر ${ch.name}.`, category: 'أخبار', durationMinutes: 60 },
+        { title: `سهرة ${ch.name} المباشرة`, desc: `عرض ممتع لأبرز البرامج واللقاءات المنوعة لجمهور ${ch.name}.`, category: 'منوعات', durationMinutes: 90 },
+      ];
+    }
 
     let currentTime = new Date(startTimeBase.getTime());
     const endTimeLimit = new Date(startTimeBase.getTime() + (daysAhead + 1) * 24 * 60 * 60 * 1000);
@@ -95,8 +147,11 @@ export function generateEpgXmlContent(channels: Channel[], daysAhead: number = 3
       const progStart = new Date(currentTime.getTime());
       const progEnd = new Date(currentTime.getTime() + template.durationMinutes * 60 * 1000);
 
+      // Customize title if generic template
+      const titleText = template.title.includes(ch.name) ? template.title : `${template.title} | ${ch.name}`;
+
       xmlLines.push(`  <programme start="${formatXmlTvDate(progStart)}" stop="${formatXmlTvDate(progEnd)}" channel="${channelId}">`);
-      xmlLines.push(`    <title lang="ar">${escapeXml(template.title)}</title>`);
+      xmlLines.push(`    <title lang="ar">${escapeXml(titleText)}</title>`);
       xmlLines.push(`    <desc lang="ar">${escapeXml(template.desc)}</desc>`);
       xmlLines.push(`    <category lang="ar">${escapeXml(template.category)}</category>`);
       xmlLines.push(`  </programme>`);
@@ -118,3 +173,4 @@ function escapeXml(unsafe: string): string {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
 }
+
