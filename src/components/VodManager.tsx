@@ -266,6 +266,7 @@ export const VodManager: React.FC = () => {
       await uploadFile('addons.xml.md5', addonsXmlMd5);
       await uploadFile('index.html', indexHtmlStr);
       await uploadFile('media_database.json', jsonDbStr);
+      await uploadFile(`${repoId}-${addonConfig.version}.zip`, repoZipBlob);
       await uploadFile(`${repoId}/${repoId}-${addonConfig.version}.zip`, repoZipBlob);
       await uploadFile(`${addonConfig.addonId}/${addonConfig.addonId}-${addonConfig.version}.zip`, pluginZipBlob);
 

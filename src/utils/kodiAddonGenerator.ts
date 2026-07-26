@@ -36,16 +36,20 @@ export function generateAddonXml(config: KodiAddonConfig): string {
  */
 export function generateIndexHtml(config: KodiAddonConfig): string {
   const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
-  const repoZipPath = `${repoId}/${repoId}-${config.version}.zip`;
-  const pluginZipPath = `${config.addonId}/${config.addonId}-${config.version}.zip`;
+  const repoZipName = `${repoId}-${config.version}.zip`;
+  const pluginZipName = `${config.addonId}-${config.version}.zip`;
+  
+  const repoZipPath = `${repoId}/${repoZipName}`;
+  const pluginZipPath = `${config.addonId}/${pluginZipName}`;
 
   return `<html>
-<head><title>Index of /amertv/</title></head>
+<head><title>Index of /</title></head>
 <body bgcolor="white">
-<h1>Index of /amertv/</h1><hr><pre>
+<h1>Index of /</h1><hr><pre>
 <a href="../">../</a>
 <a href="${repoId}/">${repoId}/</a>
 <a href="${config.addonId}/">${config.addonId}/</a>
+<a href="${repoZipName}">${repoZipName}</a>
 <a href="${repoZipPath}">${repoZipPath}</a>
 <a href="${pluginZipPath}">${pluginZipPath}</a>
 <a href="addons.xml">addons.xml</a>
