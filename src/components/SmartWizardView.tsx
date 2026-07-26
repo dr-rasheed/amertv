@@ -142,16 +142,18 @@ export const SmartWizardView: React.FC<SmartWizardViewProps> = ({
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-      // Attempt fetching first chunk or headers
-      await fetch(url, {
+      // إزالة no-cors للتمكن من قراءة حالة الرد (404, 403) بدقة
+      // ملاحظة: قد تفشل بعض القنوات الشغالة في المتصفح بسبب CORS لكنها تعمل على Kodi
+      const response = await fetch(url, {
         method: 'GET',
-        mode: 'no-cors',
         signal: controller.signal,
       });
       clearTimeout(timer);
-      return true;
+      return response.ok;
     } catch (err) {
       clearTimeout(timer);
+      // إذا كان الخطأ بسبب CORS، قد يكون السيرفر شغال ولكن يمنع المتصفحات
+      // لكن كفحص أولي سنعتبره غير متاح لضمان الجودة
       return false;
     }
   };
@@ -166,7 +168,7 @@ export const SmartWizardView: React.FC<SmartWizardViewProps> = ({
 
     let onlineCount = 0;
     let fallbackCount = 0;
-    let offlineCount = 0;
+    const offlineList: string[] = [];
     const total = channels.length;
     const updatedChannels = [...channels];
 
@@ -187,8 +189,8 @@ export const SmartWizardView: React.FC<SmartWizardViewProps> = ({
         channel.url = channel.backupUrl;
         addLog(`🔄 تم التبديل للسيرفر الاحتياطي بنجاح: ${channel.name}`);
       } else {
-        offlineCount++;
-        addLog(`⚠️ متعثرة أو تحظر العرض المباشر: ${channel.name}`);
+        offlineList.push(channel.name);
+        addLog(`⚠️ متعثرة أو لا تستجيب: ${channel.name}`);
       }
 
       await new Promise((r) => setTimeout(r, 60));
@@ -196,8 +198,13 @@ export const SmartWizardView: React.FC<SmartWizardViewProps> = ({
 
     setChannels(updatedChannels);
     setIsTestingStreams(false);
+    
+    if (offlineList.length > 0) {
+      setErrorLog(`القنوات المتعثرة (${offlineList.length}): ${offlineList.join('، ')}`);
+    }
+    
     setCurrentActionItem(`تم فحص جميع القنوات. الشغالة: ${onlineCount + fallbackCount} من أصل ${total}.`);
-    addLog(`🎉 اكتمل الفحص الشامل! الشغالة: ${onlineCount + fallbackCount} - المتعثرة: ${offlineCount}`);
+    addLog(`🎉 اكتمل الفحص الشامل! الشغالة: ${onlineCount + fallbackCount} - المتعثرة: ${offlineList.length}`);
   };
 
   // 3. Push to GitHub
