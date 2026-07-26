@@ -25,7 +25,7 @@ export const EpgGeneratorView: React.FC<EpgGeneratorViewProps> = ({ channels }) 
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'epg.xml';
+    link.download = 'ar.xml';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -57,7 +57,7 @@ export const EpgGeneratorView: React.FC<EpgGeneratorViewProps> = ({ channels }) 
               className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all hover:scale-105"
             >
               <Download className="w-4 h-4" />
-              <span>تحميل ملف (epg.xml)</span>
+              <span>تحميل ملف (ar.xml)</span>
             </button>
 
             <button

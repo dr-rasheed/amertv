@@ -26,7 +26,7 @@ async function startServer() {
     });
 
     res.setHeader('Content-Type', 'audio/x-mpegurl; charset=utf-8');
-    res.setHeader('Content-Disposition', 'attachment; filename="arabic_channels.m3u"');
+    res.setHeader('Content-Disposition', 'attachment; filename="ar.m3u"');
     res.send(m3uContent);
   });
 
@@ -34,7 +34,7 @@ async function startServer() {
   app.get('/api/epg', (req, res) => {
     const epgXml = generateEpgXmlContent(INITIAL_CHANNELS, 3);
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
-    res.setHeader('Content-Disposition', 'attachment; filename="epg.xml"');
+    res.setHeader('Content-Disposition', 'attachment; filename="ar.xml"');
     res.send(epgXml);
   });
 

@@ -1,8 +1,24 @@
 import React, { useState } from 'react';
-import { MonitorPlay, Settings, CheckCircle2, AlertTriangle, RefreshCw, Layers, Tv, HelpCircle } from 'lucide-react';
+import { MonitorPlay, Settings, CheckCircle2, AlertTriangle, RefreshCw, Layers, Tv, HelpCircle, Globe, Copy, Check } from 'lucide-react';
 
 export const KodiGuideView: React.FC = () => {
-  const [activeStep, setActiveStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<number>(2);
+  const [copiedDirect, setCopiedDirect] = useState<boolean>(false);
+  const [copiedIptvOrg, setCopiedIptvOrg] = useState<boolean>(false);
+
+  const directPagesUrl = 'https://dr-rasheed.github.io/amertv/ar.m3u';
+  const iptvOrgUrl = 'https://iptv-org.github.io/iptv/languages/ara.m3u';
+
+  const copyUrl = (url: string, type: 'direct' | 'iptvorg') => {
+    navigator.clipboard.writeText(url);
+    if (type === 'direct') {
+      setCopiedDirect(true);
+      setTimeout(() => setCopiedDirect(false), 2000);
+    } else {
+      setCopiedIptvOrg(true);
+      setTimeout(() => setCopiedIptvOrg(false), 2000);
+    }
+  };
 
   const steps = [
     {
@@ -14,16 +30,16 @@ export const KodiGuideView: React.FC = () => {
     },
     {
       number: 2,
-      title: 'إدخال رابط M3U القصير',
+      title: 'إدخال رابط M3U المباشر (Direct GitHub URL)',
       detail:
-        'اضغط على Configure في إضافة IPTV Simple Client -> في تبويب General اختر Location: Remote Path (Internet address) -> في M3U Play List URL أدخل الرابط القصير الخاص بك (مثلاً: https://is.gd/arabm3u).',
-      badge: 'إعداد M3U',
+        'اضغط على Configure في إضافة IPTV Simple Client -> في تبويب General اختر Location: Remote Path (Internet address) -> في M3U Play List URL أدخل رابط GitHub المباشر (مثل: https://dr-rasheed.github.io/amertv/ar.m3u أو https://iptv-org.github.io/iptv/languages/ara.m3u) - تم استخدام اسم ar.m3u القصير جداً لتسهيل الكتابة ببطء بريموت التلفاز.',
+      badge: 'إعداد M3U المباشر',
     },
     {
       number: 3,
       title: 'إدخال رابط EPG الخاص بدليل البرامج',
       detail:
-        'انتقل لتبويب EPG Settings -> اختر Location: Remote Path -> وفي XMLTV URL أدخل رابط EPG القصير (مثلاً: https://is.gd/arabepg).',
+        'انتقل لتبويب EPG Settings -> اختر Location: Remote Path -> وفي XMLTV URL أدخل رابط EPG المباشر الخاص بمستودعك (مثل: https://dr-rasheed.github.io/amertv/ar.xml).',
       badge: 'إعداد EPG',
     },
     {
@@ -46,13 +62,55 @@ export const KodiGuideView: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full font-semibold border border-emerald-500/20">
-                الشرح الرسمي المصور
+                الشرح الرسمي المصور - روابط مباشرة 100%
               </span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white">كيفية ربط القائمة والدليل بشرائح Kodi IPTV Simple Client</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">ربط روابط GitHub المباشرة مع إضافة Kodi IPTV Simple Client</h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
-              اتبع هذه الخطوات الأربع البسيطة لربط الرابط القصير لملف M3U و EPG ببرنامج كودي لتصفح القنوات مباشرة.
+              يمكنك إدخال رابط M3U المباشر فوراً وبشكل مباشر من GitHub أو GitHub Pages بدون أي اختصار روابط أو تعقيد.
             </p>
+          </div>
+        </div>
+
+        {/* Fast Copy Direct Links Banner */}
+        <div className="mt-6 bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+          <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+            <Globe className="w-4 h-4" />
+            <span>روابط مباشرة جاهزة للصق المباشر في Kodi:</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-slate-200">رابط مستودعك المباشر (amertv):</span>
+                <button
+                  onClick={() => copyUrl(directPagesUrl, 'direct')}
+                  className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-2.5 py-1 rounded text-[11px] flex items-center gap-1 shrink-0"
+                >
+                  {copiedDirect ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                  <span>{copiedDirect ? 'تم النسخ' : 'نسخ الرابط'}</span>
+                </button>
+              </div>
+              <code className="block bg-slate-950 p-2 rounded text-emerald-400 font-mono text-[11px] truncate">
+                {directPagesUrl}
+              </code>
+            </div>
+
+            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-slate-200">رابط IPTV-Org العربي المباشر:</span>
+                <button
+                  onClick={() => copyUrl(iptvOrgUrl, 'iptvorg')}
+                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-2.5 py-1 rounded border border-slate-700 text-[11px] flex items-center gap-1 shrink-0"
+                >
+                  {copiedIptvOrg ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  <span>{copiedIptvOrg ? 'تم النسخ' : 'نسخ الرابط'}</span>
+                </button>
+              </div>
+              <code className="block bg-slate-950 p-2 rounded text-blue-300 font-mono text-[11px] truncate">
+                {iptvOrgUrl}
+              </code>
+            </div>
           </div>
         </div>
 
@@ -125,7 +183,12 @@ export const KodiGuideView: React.FC = () => {
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900 rounded-xl border border-emerald-500/40">
                 <span className="text-slate-300 font-semibold">M3U Play List URL:</span>
-                <code className="text-amber-300 bg-slate-950 px-2 py-1 rounded font-bold">https://is.gd/arabm3u</code>
+                <code className="text-emerald-400 bg-slate-950 px-2 py-1 rounded font-bold overflow-x-auto text-[11px]">
+                  https://dr-rasheed.github.io/amertv/ar.m3u
+                </code>
+              </div>
+              <div className="p-2.5 bg-emerald-950/40 rounded-xl border border-emerald-500/30 text-[11px] text-emerald-300">
+                💡 يمكنك أيضاً تجربة رابط iptv-org المباشر: <code className="text-white bg-slate-900 px-1 py-0.5 rounded">https://iptv-org.github.io/iptv/languages/ara.m3u</code>
               </div>
             </div>
           )}
@@ -138,7 +201,9 @@ export const KodiGuideView: React.FC = () => {
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900 rounded-xl border border-emerald-500/40">
                 <span className="text-slate-300 font-semibold">XMLTV URL (EPG):</span>
-                <code className="text-amber-300 bg-slate-950 px-2 py-1 rounded font-bold">https://is.gd/arabepg</code>
+                <code className="text-amber-300 bg-slate-950 px-2 py-1 rounded font-bold overflow-x-auto text-[11px]">
+                  https://dr-rasheed.github.io/amertv/ar.xml
+                </code>
               </div>
             </div>
           )}
@@ -161,21 +226,21 @@ export const KodiGuideView: React.FC = () => {
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
         <h3 className="text-base font-bold text-white flex items-center gap-2">
           <HelpCircle className="w-5 h-5 text-amber-400" />
-          <span>حلول المشاكل الشائعة في Kodi:</span>
+          <span>أسئلة شائعة وتوضيحات حول الروابط المباشرة:</span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
-            <h4 className="font-bold text-amber-300">1. عدم ظهور القنوات في القائمة الرئيسية؟</h4>
-            <p className="text-slate-400 leading-relaxed">
-              تأكد من اختيار <strong>Remote Path</strong> بدلاً من Local Path في إعدادات الإضافة، وتأكد من أن الرابط القصير مكتوب بدقة وبدون مسافات.
+            <h4 className="font-bold text-emerald-400">هل أحتاج حتماً لتقصير الرابط؟</h4>
+            <p className="text-slate-300 leading-relaxed">
+              لا! برنامج Kodi يقرأ رابط GitHub و GitHub Pages المباشر (مثل <code className="text-amber-300 bg-slate-900 px-1 py-0.5 rounded">iptv-org.github.io</code>) مباشرة وبسرعة فائقة. اختصار الروابط هو ميزة اختيارية فقط لتسهيل الكتابة عبر ريموت التلفاز.
             </p>
           </div>
 
           <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
-            <h4 className="font-bold text-amber-300">2. فارق التوقيت في دليل البرامج EPG؟</h4>
+            <h4 className="font-bold text-amber-300">ما ميزة استخدام GitHub Pages؟</h4>
             <p className="text-slate-400 leading-relaxed">
-              من إعدادات EPG في الإضافة، يمكنك ضبط خيار <strong>EPG Time Shift</strong> بزيادة أو إنقاص ساعات حسب مدينتك ليتطابق توقيت البرامج.
+              يقدم GitHub Pages خدمة استضافة ثابتة ومجانية على شبكة CDN العالمية بـ HTTPS، مما يضمن تحميل القنوات في كودي بسرعة وبدون أي تقطيع.
             </p>
           </div>
         </div>
@@ -183,3 +248,4 @@ export const KodiGuideView: React.FC = () => {
     </div>
   );
 };
+

@@ -10,7 +10,7 @@ interface M3uGeneratorViewProps {
 export const M3uGeneratorView: React.FC<M3uGeneratorViewProps> = ({ channels }) => {
   const [options, setOptions] = useState<M3uOptions>({
     includeEpgUrl: true,
-    epgUrl: 'https://raw.githubusercontent.com/YOUR_GITHUB_USER/YOUR_REPO/main/epg.xml',
+    epgUrl: 'https://dr-rasheed.github.io/amertv/ar.xml',
     autoRefreshHours: 12,
     customHeaderComments: true,
     kodiUserAgent: 'Kodi/21.0 (IPTV Simple Client)',
@@ -31,7 +31,7 @@ export const M3uGeneratorView: React.FC<M3uGeneratorViewProps> = ({ channels }) 
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'arabic_channels.m3u';
+    link.download = 'ar.m3u';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -63,7 +63,7 @@ export const M3uGeneratorView: React.FC<M3uGeneratorViewProps> = ({ channels }) 
               className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all hover:scale-105"
             >
               <Download className="w-4 h-4" />
-              <span>تحميل ملف (arabic_channels.m3u)</span>
+              <span>تحميل ملف (ar.m3u)</span>
             </button>
 
             <button
@@ -116,7 +116,7 @@ export const M3uGeneratorView: React.FC<M3uGeneratorViewProps> = ({ channels }) 
         <div className="bg-slate-900/90 px-6 py-3 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
           <div className="flex items-center gap-2 font-mono">
             <FileText className="w-4 h-4 text-emerald-400" />
-            <span>معاينة محتوى ملف: arabic_channels.m3u</span>
+            <span>معاينة محتوى ملف: ar.m3u</span>
           </div>
           <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded text-[11px]">
             {m3uContent.split('\n').length} خط في الملف

@@ -6,7 +6,7 @@ export const ShortnerHelper: React.FC = () => {
   const [customAlias, setCustomAlias] = useState<string>('arabm3u');
   const [copiedIsGd, setCopiedIsGd] = useState<boolean>(false);
 
-  const sampleRawUrl = inputUrl || 'https://raw.githubusercontent.com/username/kodi-iptv/main/arabic_channels.m3u';
+  const sampleRawUrl = inputUrl || 'https://raw.githubusercontent.com/dr-rasheed/amertv/main/ar.m3u';
   const isGdGeneratedUrl = `https://is.gd/${customAlias || 'arabm3u'}`;
 
   const handleCopy = () => {
@@ -24,9 +24,9 @@ export const ShortnerHelper: React.FC = () => {
             <Link2 className="w-7 h-7" />
           </div>
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white">خدمة تقصير الروابط المخصصة لـ Kodi</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">أداة اختصار الروابط (اختياري - لسهولة الإدخال بالريموت)</h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
-              لأن كتابة العناوين الطويلة بريموت التلفاز أو جهاز Android TV شاقة ومملة، نوصي بتقصير رابط GitHub إلى بضعة أحرف فقط.
+              تنبيه: يمكنك استخدام رابط GitHub المباشر (مثل dr-rasheed.github.io/amertv/ar.m3u أو iptv-org.github.io/iptv/languages/ara.m3u) في Kodi مباشرة بدون أي اختصار! أداة الاختصار مخصصة فقط لمن يجد صعوبة في طباعة العناوين الطويلة بريموت التلفاز.
             </p>
           </div>
         </div>
