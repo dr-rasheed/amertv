@@ -35,30 +35,46 @@ export const GithubGuideView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Explanation for the 404 Screenshot Issue */}
-      <div className="bg-rose-950/40 border border-rose-500/40 rounded-3xl p-6 space-y-4">
+      <div className="bg-amber-950/40 border border-amber-500/40 rounded-3xl p-6 space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-lg shrink-0">
-            404
+          <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg shrink-0">
+            🔍
           </div>
           <div>
-            <h3 className="text-base font-bold text-rose-300">لماذا ظهرت لك صفحة (404 File not found) كما في الصورة التي أرفقتها؟</h3>
+            <h3 className="text-base font-bold text-amber-300">السر التقني: كيف جعل مطور iptv-org الرابط يشتغل ومظهر الملف؟</h3>
             <p className="text-slate-300 text-xs sm:text-sm mt-0.5">
-              السبب أن منصة GitHub تشترط تفعيل ميزة <strong className="text-white">GitHub Pages</strong> بضغطة زر واحدة داخل إعدادات المستودع حتى ينطلق الرابط البسيط <code className="text-amber-300 bg-slate-950 px-1.5 py-0.5 rounded">dr-rasheed.github.io/amertv/ar.m3u</code> ويصبح شغالاً مثل رابط <code className="text-emerald-400 bg-slate-950 px-1.5 py-0.5 rounded">iptv-org</code> تماماً!
+              مطور <code className="text-emerald-400 bg-slate-950 px-1.5 py-0.5 rounded">iptv-org</code> قام بأمرين بسيطين للغاية جعلت الرابط يفتح فوراً في المتصفح وفي كودي دون ظهور صفحة 404:
             </p>
           </div>
         </div>
 
-        <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3 text-xs">
-          <p className="font-bold text-amber-300">طريقة تفعيل الرابط البسيط في GitHub خلال 10 ثوانٍ فقط:</p>
-          <ol className="list-decimal list-inside space-y-2 text-slate-300 leading-relaxed pr-2">
-            <li>افتح مستودعك <code className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">amertv</code> على موقع GitHub.</li>
-            <li>اضغط على تبويب <strong className="text-white">Settings (الإعدادات)</strong> الموجود أعلى الصفحة على اليمين/اليسار.</li>
-            <li>من القائمة الجانبية اختر <strong className="text-white">Pages</strong>.</li>
-            <li>في قسم <strong className="text-white">Build and deployment -&gt; Branch</strong>: غيّر الاختيار من None إلى <strong className="text-emerald-400">main</strong> ثم اضغط <strong className="text-emerald-400">Save</strong>.</li>
-          </ol>
-          <p className="text-emerald-400 font-semibold pt-1">
-            ✨ فور الضغط على Save، سيعمل الرابط البسيط <code className="bg-slate-900 px-2 py-0.5 rounded">https://dr-rasheed.github.io/amertv/ar.m3u</code> فوراً وبأعلى سرعة في كودي وفي متصفحك!
-          </p>
+        <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4 text-xs">
+          <div className="space-y-2">
+            <p className="font-bold text-emerald-400 text-sm">1. التأكد من اسم الملف في المستودع (File Name Exact Match):</p>
+            <p className="text-slate-300 leading-relaxed pr-2">
+              في Linux و GitHub Pages، التسميات حساسة جداً لحالة الأحرف والامتدادات.
+              إذا كان الملف المرفوع في مستودعك اسمه <code className="text-amber-300 font-mono">ar.m3u</code> أو <code className="text-amber-300 font-mono">ara.m3u</code> أو <code className="text-amber-300 font-mono">arabic_channels.m3u</code>، يجب أن يطابق الرابط في المتصفح الاسم المرفوع تماماً بالأحرف الصغيرة وبدون امتداد مخفي مثل (<code className="text-rose-400">ar.m3u.txt</code>).
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <p className="font-bold text-emerald-400 text-sm">2. إضافة ملف <code className="text-amber-300 font-mono">.nojekyll</code> لمنع جيت هاب من حجب الملفات:</p>
+            <p className="text-slate-300 leading-relaxed pr-2">
+              افتراضياً يقتطع جيت هاب بعض الامتدادات أو يعالجها عبر محرّك Jekyll. مطور iptv-org أنشأ ملفاً فارغاً في جِذر مستودعه باسم <code className="text-emerald-400 font-mono">.nojekyll</code> (بدون أي محتوى) للطلب من جيت هاب إتاحة جميع ملفات الـ M3U المباشرة فوراً!
+            </p>
+          </div>
+
+          <div className="p-3.5 bg-emerald-950/60 rounded-xl border border-emerald-500/40 text-emerald-200 font-semibold space-y-1.5">
+            <p className="text-white font-bold">🛠️ الخطوات الـ 3 المباشرة للحل فوراً:</p>
+            <ol className="list-decimal list-inside space-y-1.5 text-xs text-slate-200 pr-2 font-normal">
+              <li>حمل الملف من التطبيق باسم <strong className="text-amber-300">ar.m3u</strong> أو <strong className="text-amber-300">ara.m3u</strong>.</li>
+              <li>افتح مستودعك <code className="text-white font-mono bg-slate-900 px-1 py-0.5 rounded">amertv</code> وامسح أي ملفات قديمة ثم ارفع <strong className="text-emerald-400 font-mono">ar.m3u</strong> واضغط Commit.</li>
+              <li>اضغط <strong className="text-white">Add file -&gt; Create new file</strong> واكتب اسم الملف بالضبط: <strong className="text-emerald-400 font-mono">.nojekyll</strong> (يبدأ بنقطة) واضغط Commit.</li>
+            </ol>
+            <p className="text-amber-300 text-[11px] pt-1">
+              ألف مبروك! بعدها سيعمل رابطك المباشر <code className="bg-slate-900 px-1.5 py-0.5 rounded text-emerald-400 font-mono">https://dr-rasheed.github.io/amertv/ar.m3u</code> في المتصفح وفي كودي 100%!
+            </p>
+          </div>
         </div>
       </div>
 

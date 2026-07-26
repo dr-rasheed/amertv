@@ -51,8 +51,11 @@ async function startServer() {
   };
 
   // Direct routes for Kodi Simple Client
+  app.get('/ara.m3u', handleM3uRequest);
   app.get('/ar.m3u', handleM3uRequest);
+  app.get('/arabic_channels.m3u', handleM3uRequest);
   app.get('/api/m3u', handleM3uRequest);
+  app.get('/ara.xml', handleEpgRequest);
   app.get('/ar.xml', handleEpgRequest);
   app.get('/api/epg', handleEpgRequest);
 

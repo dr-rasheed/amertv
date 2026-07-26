@@ -26,12 +26,12 @@ export const M3uGeneratorView: React.FC<M3uGeneratorViewProps> = ({ channels }) 
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleDownloadM3u = () => {
+  const handleDownloadM3u = (filename: string = 'ar.m3u') => {
     const blob = new Blob([m3uContent], { type: 'audio/x-mpegurl;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'ar.m3u';
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -56,14 +56,23 @@ export const M3uGeneratorView: React.FC<M3uGeneratorViewProps> = ({ channels }) 
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <button
-              id="download-m3u-file-btn"
-              onClick={handleDownloadM3u}
+              id="download-m3u-ar-btn"
+              onClick={() => handleDownloadM3u('ar.m3u')}
               className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all hover:scale-105"
             >
               <Download className="w-4 h-4" />
-              <span>تحميل ملف (ar.m3u)</span>
+              <span>تحميل (ar.m3u)</span>
+            </button>
+
+            <button
+              id="download-m3u-ara-btn"
+              onClick={() => handleDownloadM3u('ara.m3u')}
+              className="bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all"
+            >
+              <Download className="w-4 h-4 text-emerald-400" />
+              <span>تحميل (ara.m3u)</span>
             </button>
 
             <button
@@ -72,7 +81,7 @@ export const M3uGeneratorView: React.FC<M3uGeneratorViewProps> = ({ channels }) 
               className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-700 flex items-center gap-2 transition-colors"
             >
               {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-              <span>{copied ? 'تم النسخ!' : 'نسخ الكود بالكامل'}</span>
+              <span>{copied ? 'تم النسخ!' : 'نسخ النص'}</span>
             </button>
           </div>
         </div>
