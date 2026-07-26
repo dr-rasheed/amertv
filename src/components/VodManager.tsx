@@ -6,10 +6,12 @@ import {
   generatePythonMainScript, 
   generateRepositoryXml, 
   generateIndexHtml,
+  generateAddonsXml,
   createRepositoryZipBlob,
   createPluginZipBlob,
   createFullRepositoryReleaseBundleZipBlob
 } from '../utils/kodiAddonGenerator';
+import md5 from 'md5';
 import { 
   Film, PlaySquare, Youtube, Plus, Download, Edit3, Trash2, X, Info, 
   Code2, Server, Globe, CheckCircle2, Copy, Sparkles, Layers, RefreshCw,
@@ -102,6 +104,10 @@ export const VodManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'database' | 'generator' | 'scrapers' | 'deploy'>('generator');
   const [selectedCategory, setSelectedCategory] = useState<string>('الكل');
   const [isGeneratingZip, setIsGeneratingZip] = useState<boolean>(false);
+  const [githubToken, setGithubToken] = useState<string>('');
+  const [githubRepo, setGithubRepo] = useState<string>('dr-rasheed/amertv');
+  const [isDeploying, setIsDeploying] = useState<boolean>(false);
+  const [deployLog, setDeployLog] = useState<string[]>([]);
 
   // Kodi Generator Configuration with AmerTV repository defaults
   const [addonConfig, setAddonConfig] = useState<KodiAddonConfig>({
@@ -141,6 +147,138 @@ export const VodManager: React.FC = () => {
   });
 
   const [tempSources, setTempSources] = useState<SourceLink[]>([]);
+
+  const handleDeployToGithub = async () => {
+    if (!githubToken) {
+      alert("الرجاء إدخال توكن GitHub أولاً (GitHub Access Token)");
+      return;
+    }
+    if (!githubRepo || !githubRepo.includes('/')) {
+      alert("الرجاء إدخال اسم المستودع بصيغة owner/repo");
+      return;
+    }
+    
+    setIsDeploying(true);
+    setDeployLog(["بدء الاتصال مع GitHub API..."]);
+    
+    try {
+      const branch = 'main'; 
+      const baseUrl = `https://api.github.com/repos/${githubRepo}`;
+      const headers = {
+        'Authorization': `token ${githubToken}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      };
+
+      const log = (msg: string) => setDeployLog(prev => [...prev, msg]);
+
+      // 1. Get the repository info to verify default branch
+      let actualBranch = branch;
+      try {
+        const repoRes = await fetch(baseUrl, { headers });
+        if (repoRes.ok) {
+          const repoData = await repoRes.json();
+          actualBranch = repoData.default_branch || branch;
+          log(`فرع المستودع الافتراضي هو: ${actualBranch}`);
+        } else {
+          throw new Error("لا يمكن الوصول للمستودع، تأكد من صحة التوكن واسم المستودع");
+        }
+      } catch (e: any) {
+        throw new Error(e.message);
+      }
+
+      // Helper to convert Blob to Base64
+      const blobToBase64 = (blob: Blob): Promise<string> => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]);
+          };
+          reader.readAsDataURL(blob);
+        });
+      };
+
+      // Helper for individual file PUT
+      const uploadFile = async (path: string, content: string | Blob, isBase64: boolean = false) => {
+        log(`جاري رفع ${path}...`);
+        
+        let base64Content = "";
+        if (content instanceof Blob) {
+           base64Content = await blobToBase64(content);
+        } else if (isBase64) {
+           base64Content = content as string;
+        } else {
+           base64Content = btoa(unescape(encodeURIComponent(content as string)));
+        }
+
+        // 1. Get file SHA if it exists
+        let sha = undefined;
+        try {
+          const getRes = await fetch(`${baseUrl}/contents/${path}?ref=${actualBranch}`, { headers });
+          if (getRes.ok) {
+            const data = await getRes.json();
+            sha = data.sha;
+          }
+        } catch (e) { /* ignore */ }
+
+        // 2. PUT file
+        const body = {
+          message: `تحديث تلقائي: ${path} (الإصدار ${addonConfig.version})`,
+          content: base64Content,
+          branch: actualBranch,
+          ...(sha ? { sha } : {})
+        };
+
+        const putRes = await fetch(`${baseUrl}/contents/${path}`, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify(body)
+        });
+
+        if (!putRes.ok) {
+          const errData = await putRes.json();
+          throw new Error(`فشل رفع ${path}: ${errData.message}`);
+        }
+        log(`✅ تم رفع ${path} بنجاح`);
+      };
+
+      // Generate all files
+      log("جاري توليد ملفات المستودع محلياً...");
+      
+      const rawBaseUrl = `https://raw.githubusercontent.com/${githubRepo}/${actualBranch}`;
+      const deployConfig = { ...addonConfig, repoUrl: rawBaseUrl };
+      
+      const repoId = `repository.${deployConfig.addonId.replace('plugin.video.', '')}`;
+      const addonsXmlStr = generateAddonsXml(deployConfig);
+      const addonsXmlMd5 = md5(addonsXmlStr);
+      const indexHtmlStr = generateIndexHtml(deployConfig);
+      
+      const sortedItems = [...dbItems].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
+      const jsonDbStr = JSON.stringify({
+        version: deployConfig.dbVersion,
+        updatedAt: new Date().toISOString(),
+        items: sortedItems
+      }, null, 2);
+
+      const repoZipBlob = await createRepositoryZipBlob(deployConfig);
+      const pluginZipBlob = await createPluginZipBlob(deployConfig, dbItems);
+
+      // Upload them sequentially
+      await uploadFile('addons.xml', addonsXmlStr);
+      await uploadFile('addons.xml.md5', addonsXmlMd5);
+      await uploadFile('index.html', indexHtmlStr);
+      await uploadFile('media_database.json', jsonDbStr);
+      await uploadFile(`${repoId}/${repoId}-${addonConfig.version}.zip`, repoZipBlob);
+      await uploadFile(`${addonConfig.addonId}/${addonConfig.addonId}-${addonConfig.version}.zip`, pluginZipBlob);
+
+      log("🎉 تمت العملية بنجاح! مكتبتك الآن محدثة على كودي مباشرة.");
+    } catch (err: any) {
+      setDeployLog(prev => [...prev, `❌ خطأ: ${err.message}`]);
+    } finally {
+      setIsDeploying(false);
+    }
+  };
 
   const toggleSourceEnabled = (id: string) => {
     const updated = sources.map(s => s.id === id ? { ...s, enabled: !s.enabled } : s);
@@ -188,7 +326,10 @@ export const VodManager: React.FC = () => {
   const handleDownloadRepoZip = async () => {
     try {
       setIsGeneratingZip(true);
-      const zipBlob = await createRepositoryZipBlob(addonConfig);
+      const rawBaseUrl = `https://raw.githubusercontent.com/${githubRepo}/main`;
+      const downloadConfig = { ...addonConfig, repoUrl: rawBaseUrl };
+      
+      const zipBlob = await createRepositoryZipBlob(downloadConfig);
       const url = URL.createObjectURL(zipBlob);
       const a = document.createElement('a');
       a.href = url;
@@ -224,7 +365,10 @@ export const VodManager: React.FC = () => {
   const handleDownloadFullReleaseBundleZip = async () => {
     try {
       setIsGeneratingZip(true);
-      const zipBlob = await createFullRepositoryReleaseBundleZipBlob(addonConfig, dbItems);
+      const rawBaseUrl = `https://raw.githubusercontent.com/${githubRepo}/main`;
+      const downloadConfig = { ...addonConfig, repoUrl: rawBaseUrl };
+      
+      const zipBlob = await createFullRepositoryReleaseBundleZipBlob(downloadConfig, dbItems);
       const url = URL.createObjectURL(zipBlob);
       const a = document.createElement('a');
       a.href = url;
@@ -766,51 +910,102 @@ export const VodManager: React.FC = () => {
               <Server className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-100">دليل رفع وتحديث مستودع AmerTV على GitHub</h3>
-              <p className="text-xs text-slate-400" dir="ltr">https://github.com/dr-rasheed/amertv</p>
+              <h3 className="text-lg font-bold text-slate-100">نشر التحديثات تلقائياً على GitHub (Auto-Deploy)</h3>
+              <p className="text-xs text-slate-400">لن تحتاج بعد الآن لتحميل الملفات ورفعها يدوياً. فقط بضغطة زر سيتم رفع كل شيء عبر GitHub API.</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-300">
-            <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50 space-y-3">
-              <h4 className="font-bold text-purple-400 flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs">1</span>
-                الملفات المطلوبة للرفع في مستودع GitHub
+            {/* Auto Deploy Form */}
+            <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50 space-y-4">
+              <h4 className="font-bold text-emerald-400 flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                تحديث المستودع برمجياً بضغطة زر
               </h4>
-              <p className="text-xs text-slate-400">حمل الملفات التالية وارفعها مباشرة داخل مستودعك <code className="text-purple-300" dir="ltr">dr-rasheed/amertv</code>:</p>
               
-              <div className="space-y-2 pt-2">
-                <button onClick={handleDownloadFullReleaseBundleZip} className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs px-3 py-2.5 rounded-lg font-bold flex items-center justify-between shadow-lg border border-purple-400/30">
-                  <span>📦 تحميل حزمة المستودع الشاملة (كل الملفات بـ ZIP واحد)</span>
-                  <FolderArchive className="w-4 h-4 text-purple-200" />
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-400 mb-1">اسم المستودع (Owner/Repo)</label>
+                  <input
+                    type="text"
+                    value={githubRepo}
+                    onChange={(e) => setGithubRepo(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200 font-mono"
+                    dir="ltr"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-400 mb-1">توكن الوصول (GitHub Token)</label>
+                  <input
+                    type="password"
+                    value={githubToken}
+                    onChange={(e) => setGithubToken(e.target.value)}
+                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200 font-mono"
+                    dir="ltr"
+                  />
+                  <p className="text-[10px] text-slate-500 mt-1">يجب أن يملك التوكن صلاحية (repo) لكي يستطيع رفع الملفات.</p>
+                </div>
+
+                <button
+                  onClick={handleDeployToGithub}
+                  disabled={isDeploying || !githubToken}
+                  className={`w-full text-white text-xs font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg ${
+                    isDeploying || !githubToken
+                      ? 'bg-slate-700 cursor-not-allowed text-slate-400' 
+                      : 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-900/40'
+                  }`}
+                >
+                  <RefreshCw className={`w-4 h-4 ${isDeploying ? 'animate-spin' : ''}`} />
+                  {isDeploying ? 'جاري رفع الملفات ونشر التحديث...' : 'Commit & Push (تحديث مباشر لـ GitHub)'}
                 </button>
-                <button onClick={handleDownloadRepoZip} className="w-full bg-purple-600/40 hover:bg-purple-600/60 text-purple-200 text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between border border-purple-500/30">
-                  <span>1. repository.amertv-1.0.0.zip (ملف المستودع)</span>
-                  <FolderArchive className="w-4 h-4" />
-                </button>
-                <button onClick={handleExportIndexHtml} className="w-full bg-blue-600/30 hover:bg-blue-600/50 text-blue-200 text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between border border-blue-500/30">
-                  <span>2. index.html (ضروري جدا لكي يقرأ كودي المجلد)</span>
-                  <FileCode className="w-4 h-4" />
-                </button>
-                <button onClick={handleExportJsonDb} className="w-full bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between border border-emerald-500/30">
-                  <span>3. media_database.json (دليل الأفلام)</span>
+              </div>
+
+              {/* Deployment Logs */}
+              {deployLog.length > 0 && (
+                <div className="mt-4 bg-slate-950 rounded-xl p-3 border border-slate-800 h-32 overflow-y-auto">
+                  <ul className="space-y-1">
+                    {deployLog.map((log, idx) => (
+                      <li key={idx} className={`text-[10px] font-mono ${
+                        log.includes('✅') ? 'text-emerald-400' : 
+                        log.includes('❌') ? 'text-red-400' : 
+                        log.includes('🎉') ? 'text-purple-400 font-bold' : 'text-slate-400'
+                      }`}>
+                        {log}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            {/* Manual Method Fallback */}
+            <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50 space-y-3">
+              <h4 className="font-bold text-slate-400 flex items-center gap-2">
+                <FolderArchive className="w-4 h-4" />
+                الطريقة اليدوية (إذا لم ترغب بوضع التوكن)
+              </h4>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                في حال لم ترغب باستخدام التحديث التلقائي، يمكنك دائماً تحميل الحزمة واستخراجها ورفعها من خلال موقع GitHub مباشرة.
+              </p>
+              
+              <div className="pt-2">
+                <button onClick={handleDownloadFullReleaseBundleZip} className="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 text-xs px-3 py-2.5 rounded-lg font-bold flex items-center justify-between">
+                  <span>تحميل حزمة المستودع (ZIP)</span>
                   <Download className="w-4 h-4" />
                 </button>
               </div>
-            </div>
 
-            <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50 space-y-3">
-              <h4 className="font-bold text-purple-400 flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs">2</span>
-                طريقة التثبيت داخل Kodi
-              </h4>
-              <ol className="list-decimal list-inside space-y-2 text-xs text-slate-300 leading-relaxed">
-                <li>من شاشة Kodi اذهب إلى <strong className="text-white">Settings -&gt; File Manager -&gt; Add source</strong>.</li>
-                <li>ضع الرابط: <code className="bg-slate-950 px-2 py-0.5 rounded text-emerald-400 font-mono" dir="ltr">https://dr-rasheed.github.io/amertv/</code></li>
-                <li>سمّ المصدر <strong className="text-purple-300">AmerTV Repo</strong> ثم اضغط OK.</li>
-                <li>اذهب إلى <strong className="text-white">Add-ons -&gt; Install from zip file</strong> واختر <strong className="text-purple-300">AmerTV Repo</strong>.</li>
-                <li>ستجد ملف <code className="text-emerald-400 font-mono">repository.amertv-1.0.0.zip</code> ظاهراً فوراً! قم بالضغط عليه لتثبيته.</li>
-              </ol>
+              <div className="mt-6 border-t border-slate-700/50 pt-4">
+                <h4 className="font-bold text-blue-400 mb-2 text-xs">طريقة تثبيت المستودع في كودي:</h4>
+                <ol className="list-decimal list-inside space-y-2 text-[11px] text-slate-300 leading-relaxed">
+                  <li>في Kodi: <strong className="text-white">Settings -&gt; File Manager -&gt; Add source</strong></li>
+                  <li>الرابط: <code className="bg-slate-950 px-1.5 py-0.5 rounded text-emerald-400 font-mono" dir="ltr">https://dr-rasheed.github.io/amertv/</code></li>
+                  <li>اسم المصدر: <strong className="text-purple-300">AmerTV Repo</strong></li>
+                  <li>في <strong className="text-white">Add-ons -&gt; Install from zip file</strong>، اختر المستودع.</li>
+                  <li>ثبت ملف <code className="text-emerald-400">repository.amertv...zip</code> ثم ثبت إضافة <code className="text-blue-400">AmerTV Matrix</code> من المستودع!</li>
+                </ol>
+              </div>
             </div>
           </div>
         </div>

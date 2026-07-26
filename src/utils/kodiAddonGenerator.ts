@@ -1,5 +1,6 @@
 import { KodiAddonConfig, UnifiedMediaItem } from '../types/repository';
 import JSZip from 'jszip';
+import md5 from 'md5';
 
 /**
  * Generates valid Kodi 19/20/21 Python (Matrix/Nexus/Omega) addon.xml
@@ -34,33 +35,23 @@ export function generateAddonXml(config: KodiAddonConfig): string {
  * Generates index.html for Kodi HTTP directory scraping
  */
 export function generateIndexHtml(config: KodiAddonConfig): string {
-  const repoZipName = `repository.amertv-${config.version}.zip`;
-  const pluginZipName = `${config.addonId}-${config.version}.zip`;
+  const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
+  const repoZipPath = `${repoId}/${repoId}-${config.version}.zip`;
+  const pluginZipPath = `${config.addonId}/${config.addonId}-${config.version}.zip`;
 
-  return `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>AmerTV Repository for Kodi</title>
-    <style>
-        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; }
-        h1 { color: #a855f7; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 10px 0; background: #1e293b; padding: 12px; rounded: 8px; }
-        a { color: #38bdf8; font-size: 18px; text-decoration: none; font-weight: bold; }
-        a:hover { text-decoration: underline; }
-    </style>
-</head>
-<body>
-    <h1>مستودع AmerTV الرسمي لكودي (Kodi)</h1>
-    <p>قم بالضغط على أحد الملفات أدناه للتحميل أو استخدم هذا الرابط في Kodi File Manager:</p>
-    <ul>
-        <li><a href="${repoZipName}">${repoZipName}</a> (ملف تثبيت المستودع الرئيسي)</li>
-        <li><a href="${pluginZipName}">${pluginZipName}</a> (ملف الإضافة المباشر)</li>
-        <li><a href="media_database.json">media_database.json</a> (دليل الأفلام والمسلسلات)</li>
-        <li><a href="addons.xml">addons.xml</a></li>
-    </ul>
-</body>
+  return `<html>
+<head><title>Index of /amertv/</title></head>
+<body bgcolor="white">
+<h1>Index of /amertv/</h1><hr><pre>
+<a href="../">../</a>
+<a href="${repoId}/">${repoId}/</a>
+<a href="${config.addonId}/">${config.addonId}/</a>
+<a href="${repoZipPath}">${repoZipPath}</a>
+<a href="${pluginZipPath}">${pluginZipPath}</a>
+<a href="addons.xml">addons.xml</a>
+<a href="addons.xml.md5">addons.xml.md5</a>
+<a href="media_database.json">media_database.json</a>
+</pre><hr></body>
 </html>`;
 }
 
@@ -68,8 +59,8 @@ export function generateIndexHtml(config: KodiAddonConfig): string {
  * Generates aggregated addons.xml for the repository
  */
 export function generateAddonsXml(config: KodiAddonConfig): string {
-  const repoXml = generateRepositoryXml(config);
-  const pluginXml = generateAddonXml(config);
+  const repoXml = generateRepositoryXml(config).replace(/<\?xml.*\?>\s*/g, '');
+  const pluginXml = generateAddonXml(config).replace(/<\?xml.*\?>\s*/g, '');
 
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
@@ -125,19 +116,23 @@ export async function createPluginZipBlob(config: KodiAddonConfig, dbItems: Unif
 export async function createFullRepositoryReleaseBundleZipBlob(config: KodiAddonConfig, dbItems: UnifiedMediaItem[]): Promise<Blob> {
   const bundleZip = new JSZip();
 
+  const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
+
   // 1. Generate repo zip
   const repoZipBlob = await createRepositoryZipBlob(config);
-  bundleZip.file(`repository.amertv-${config.version}.zip`, repoZipBlob);
+  bundleZip.file(`${repoId}/${repoId}-${config.version}.zip`, repoZipBlob);
 
   // 2. Generate plugin zip
   const pluginZipBlob = await createPluginZipBlob(config, dbItems);
-  bundleZip.file(`${config.addonId}-${config.version}.zip`, pluginZipBlob);
+  bundleZip.file(`${config.addonId}/${config.addonId}-${config.version}.zip`, pluginZipBlob);
 
   // 3. Generate index.html
   bundleZip.file('index.html', generateIndexHtml(config));
 
-  // 4. Generate addons.xml
-  bundleZip.file('addons.xml', generateAddonsXml(config));
+  // 4. Generate addons.xml & addons.xml.md5
+  const addonsXmlStr = generateAddonsXml(config);
+  bundleZip.file('addons.xml', addonsXmlStr);
+  bundleZip.file('addons.xml.md5', md5(addonsXmlStr));
 
   // 5. Generate media_database.json
   const sortedItems = [...dbItems].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
@@ -445,11 +440,11 @@ def play_episode_handler(item_id, season_num, ep_num):
 # ------------------------------------------------------------------------------
 # EMBEDDED FALLBACK DATABASE
 # ------------------------------------------------------------------------------
-EMBEDDED_DATABASE = {
+EMBEDDED_DATABASE = json.loads(r"""{
   "version": "${config.dbVersion}",
   "updatedAt": "${new Date().toISOString()}",
   "items": ${JSON.stringify(databaseItems, null, 2)}
-}
+}""")
 
 # ------------------------------------------------------------------------------
 # MAIN ENTRYPOINT & ROUTER
@@ -484,13 +479,15 @@ elif mode == 'force_update_db':
  */
 export function generateRepositoryXml(config: KodiAddonConfig): string {
   const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
+  const baseUrl = config.repoUrl.replace(/\/$/, ''); // Remove trailing slash if present
+  
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="${repoId}" name="مستودع ${config.addonName}" version="${config.version}" provider-name="${config.providerName}">
   <extension point="xbmc.addon.repository" name="مستودع ${config.addonName}">
     <dir>
-      <info compressed="false">${config.repoUrl}/addons.xml</info>
-      <checksum>${config.repoUrl}/addons.xml.md5</checksum>
-      <datadir zip="true">${config.repoUrl}</datadir>
+      <info compressed="false">${baseUrl}/addons.xml</info>
+      <checksum>${baseUrl}/addons.xml.md5</checksum>
+      <datadir zip="true">${baseUrl}/</datadir>
     </dir>
   </extension>
   <extension point="xbmc.addon.metadata">
