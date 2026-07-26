@@ -1,164 +1,7 @@
-import { KodiAddonConfig, UnifiedMediaItem } from '../types/repository';
-import JSZip from 'jszip';
-import md5 from 'md5';
-
-/**
- * Generates valid Kodi 19/20/21 Python (Matrix/Nexus/Omega) addon.xml
- */
-export function generateAddonXml(config: KodiAddonConfig): string {
-  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="${config.addonId}" name="${config.addonName}" version="${config.version}" provider-name="${config.providerName}">
-  <requires>
-    <import addon="xbmc.python" version="3.0.0"/>
-    <import addon="script.module.requests" version="2.22.0"/>
-    <import addon="script.module.beautifulsoup4" version="4.9.3"/>
-    <import addon="script.module.urllib3" version="1.25.8"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="main.py">
-    <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary lang="ar">${config.summary}</summary>
-    <description lang="ar">إضافة ميديا شاملة لـ Kodi مع كاشط متعدد المصادر (عرب كافيه، أكوام، إيجي بست، فاصل إعلاني، سيما فور يو، عرب سيد) مع التحديث التلقائي المباشر من مستودع GitHub (${config.repoUrl}) وتشغيل الحلقة التالية تلقائياً.</description>
-
-    <platform>all</platform>
-    <license>GPL-2.0-only</license>
-    <assets>
-      <icon>icon.png</icon>
-      <fanart>fanart.jpg</fanart>
-    </assets>
-  </extension>
-</addon>`;
-}
-
-/**
- * Generates index.html for Kodi HTTP directory scraping
- */
-export function generateIndexHtml(config: KodiAddonConfig): string {
-  const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
-  const repoZipPath = `${repoId}/${repoId}-${config.version}.zip`;
-  const pluginZipPath = `${config.addonId}/${config.addonId}-${config.version}.zip`;
-
-  return `<html>
-<head><title>Index of /amertv/</title></head>
-<body bgcolor="white">
-<h1>Index of /amertv/</h1><hr><pre>
-<a href="../">../</a>
-<a href="${repoId}/">${repoId}/</a>
-<a href="${config.addonId}/">${config.addonId}/</a>
-<a href="${repoZipPath}">${repoZipPath}</a>
-<a href="${pluginZipPath}">${pluginZipPath}</a>
-<a href="addons.xml">addons.xml</a>
-<a href="addons.xml.md5">addons.xml.md5</a>
-<a href="media_database.json">media_database.json</a>
-</pre><hr></body>
-</html>`;
-}
-
-/**
- * Generates aggregated addons.xml for the repository
- */
-export function generateAddonsXml(config: KodiAddonConfig): string {
-  const repoXml = generateRepositoryXml(config).replace(/<\?xml.*\?>\s*/g, '');
-  const pluginXml = generateAddonXml(config).replace(/<\?xml.*\?>\s*/g, '');
-
-  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addons>
-${repoXml}
-${pluginXml}
-</addons>`;
-}
-
-/**
- * Generates repository.amertv-1.0.0.zip as a downloadable Blob
- */
-export async function createRepositoryZipBlob(config: KodiAddonConfig): Promise<Blob> {
-  const zip = new JSZip();
-  const repoDirName = `repository.amertv`;
-  const repoFolder = zip.folder(repoDirName);
-
-  if (repoFolder) {
-    repoFolder.file('addon.xml', generateRepositoryXml(config));
-    repoFolder.file('changelog.txt', `AmerTV Repository v${config.version}\n- Initial Release with Matrix & ZombiB Scrapers`);
-  }
-
-  return await zip.generateAsync({ type: 'blob' });
-}
-
-/**
- * Generates plugin.video.amertv-1.0.0.zip as a downloadable Blob
- */
-export async function createPluginZipBlob(config: KodiAddonConfig, dbItems: UnifiedMediaItem[]): Promise<Blob> {
-  const zip = new JSZip();
-  const pluginFolder = zip.folder(config.addonId);
-
-  if (pluginFolder) {
-    pluginFolder.file('addon.xml', generateAddonXml(config));
-    pluginFolder.file('main.py', generatePythonMainScript(config, dbItems));
-    pluginFolder.file('media_database.json', JSON.stringify({
-      version: config.dbVersion,
-      updatedAt: new Date().toISOString(),
-      items: dbItems
-    }, null, 2));
-  }
-
-  return await zip.generateAsync({ type: 'blob' });
-}
-
-/**
- * Creates a single Master GitHub Release Bundle ZIP containing all repository files:
- * - repository.amertv-1.0.0.zip
- * - plugin.video.amertv-1.0.0.zip
- * - index.html
- * - addons.xml
- * - media_database.json
- */
-export async function createFullRepositoryReleaseBundleZipBlob(config: KodiAddonConfig, dbItems: UnifiedMediaItem[]): Promise<Blob> {
-  const bundleZip = new JSZip();
-
-  const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
-
-  // 1. Generate repo zip
-  const repoZipBlob = await createRepositoryZipBlob(config);
-  bundleZip.file(`${repoId}/${repoId}-${config.version}.zip`, repoZipBlob);
-
-  // 2. Generate plugin zip
-  const pluginZipBlob = await createPluginZipBlob(config, dbItems);
-  bundleZip.file(`${config.addonId}/${config.addonId}-${config.version}.zip`, pluginZipBlob);
-
-  // 3. Generate index.html
-  bundleZip.file('index.html', generateIndexHtml(config));
-
-  // 4. Generate addons.xml & addons.xml.md5
-  const addonsXmlStr = generateAddonsXml(config);
-  bundleZip.file('addons.xml', addonsXmlStr);
-  bundleZip.file('addons.xml.md5', md5(addonsXmlStr));
-
-  // 5. Generate media_database.json
-  const sortedItems = [...dbItems].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
-  bundleZip.file('media_database.json', JSON.stringify({
-    version: config.dbVersion,
-    updatedAt: new Date().toISOString(),
-    items: sortedItems
-  }, null, 2));
-
-  return await bundleZip.generateAsync({ type: 'blob' });
-}
-
-/**
- * Generates main.py Python scraper & database player script for Kodi
- */
-export function generatePythonMainScript(config: KodiAddonConfig, databaseItems: UnifiedMediaItem[]): string {
-  let repoRawUrl = `${config.repoUrl}/media_database.json`;
-  const match = config.repoUrl.match(/https?:\/\/([^\.]+)\.github\.io\/([^\/]+)/);
-  if (match) {
-    repoRawUrl = `https://raw.githubusercontent.com/${match[1]}/${match[2]}/main/media_database.json`;
-  }
-
-  return `# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # ==============================================================================
-# Kodi Addon: ${config.addonName} (${config.addonId})
-# Repository Host: ${config.repoUrl}
+# Kodi Addon: AmerTV Matrix & ZombiB Repository (plugin.video.amertv)
+# Repository Host: https://dr-rasheed.github.io/amertv
 # Auto-Generated Python Core (Kodi 19 Matrix / 20 Nexus / 21 Omega)
 # Includes: Multi-Source Scraping, Auto Database Sync, Auto Next Episode
 # ==============================================================================
@@ -178,8 +21,8 @@ from bs4 import BeautifulSoup
 
 HANDLE = int(sys.argv[1])
 BASE_URL = sys.argv[0]
-ADDON_ID = "${config.addonId}"
-REMOTE_DB_URL = "${repoRawUrl}"
+ADDON_ID = "plugin.video.amertv"
+REMOTE_DB_URL = "https://dr-rasheed.github.io/amertv/media_database.json"
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -389,7 +232,7 @@ def resolve_and_play(sources, title_prefix="", next_episode_callback=None):
     xbmcplugin.setResolvedUrl(HANDLE, True, listitem)
 
     # خاصية الانتقال التلقائي للحلقة التالية للمسلسلات
-    if next_episode_callback and "${config.autoNextEpisode ? 'True' : 'False'}" == "True":
+    if next_episode_callback and "True" == "True":
         monitor = xbmc.Monitor()
         while player.isPlaying():
             if monitor.waitForAbort(1):
@@ -444,12 +287,11 @@ def play_episode_handler(item_id, season_num, ep_num):
 # ------------------------------------------------------------------------------
 # EMBEDDED FALLBACK DATABASE
 # ------------------------------------------------------------------------------
-import base64
-EMBEDDED_DATABASE = json.loads(base64.b64decode("${btoa(unescape(encodeURIComponent(JSON.stringify({
-  version: config.dbVersion,
-  updatedAt: new Date().toISOString(),
-  items: databaseItems
-}))))}").decode('utf-8'))
+EMBEDDED_DATABASE = json.loads(r"""{
+  "version": "1",
+  "updatedAt": "2026-07-26T20:17:21.619Z",
+  "items": []
+}""")
 
 # ------------------------------------------------------------------------------
 # MAIN ENTRYPOINT & ROUTER
@@ -476,30 +318,3 @@ elif mode == 'force_update_db':
     check_and_update_db(db_path)
     xbmcgui.Dialog().ok("AmerTV", "تمت عملية فحص وتحديث الميديا بنجاح!")
     main_menu()
-`;
-}
-
-/**
- * Generates repository.xml for hosting on GitHub Pages
- */
-export function generateRepositoryXml(config: KodiAddonConfig): string {
-  const repoId = `repository.${config.addonId.replace('plugin.video.', '')}`;
-  const baseUrl = config.repoUrl.replace(/\/$/, ''); // Remove trailing slash if present
-  
-  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="${repoId}" name="مستودع ${config.addonName}" version="${config.version}" provider-name="${config.providerName}">
-  <extension point="xbmc.addon.repository" name="مستودع ${config.addonName}">
-    <dir>
-      <info compressed="false">${baseUrl}/addons.xml</info>
-      <checksum>${baseUrl}/addons.xml.md5</checksum>
-      <datadir zip="true">${baseUrl}/</datadir>
-    </dir>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary lang="ar">المستودع الرسمي الموحد لإضافات AmerTV ومكشوطات الأفلام والمسلسلات (ZombiB & Matrix)</summary>
-    <description lang="ar">ثبت هذا المستودع في Kodi للحصول على التحديثات التلقائية المستمرة لجميع مصادر الميديا والمسلسلات والأفلام مع دعم الانتهاء المباشر والانتقال التلقائي بين الحلقات.</description>
-
-    <platform>all</platform>
-  </extension>
-</addon>`;
-}
