@@ -1,9 +1,8 @@
-#EXTM3U refresh="43200" x-tvg-url="https://dr-rasheed.github.io/amertv/ar.xml"
+#EXTM3U refresh="43200" x-tvg-url="https://raw.githubusercontent.com/dr-rasheed/amertv/main/ar.xml"
 #####################################################################
-# Arabic & International IPTV Playlist for Kodi PVR IPTV Simple Client
+# Arabic IPTV Playlist for Kodi PVR IPTV Simple Client
 # Auto-generated & Optimized for High Quality Streams
-# Features: NatGeo Abu Dhabi (Multi-Servers), NatGeo Wild, NatGeo Global English,
-# Quest Arabiya, DW Documentary, NASA TV, Al Jazeera, Sports & News
+# Features: NatGeo Abu Dhabi, News, Sports, Series, Quran & Kids
 #####################################################################
 #EXTINF:-1 tvg-id="NatGeoAbuDhabi.ae" tvg-name="NatGeoAbuDhabi.ae" tvg-logo="https://iptv-org.github.io/iptv/logos/NationalGeographicAbuDhabi.ae.png" group-title="الوثائقيات والمعرفة",ناشيونال جيوغرافيك أبوظبي (سيرفر 1)
 #KODIPROP:inputstream=inputstream.adaptive
@@ -155,63 +154,103 @@ https://ktv.gov.kw/hls/ktsports.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Wi
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 https://part.gov.om/hls/omansports.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="MBC1.sa" tvg-name="MBC1.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/MBC1.sa.png" group-title="الترفيه والمسلسلات",MBC 1 HD
+#EXTINF:-1 tvg-id="MBC1.sa" tvg-name="MBC1.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBC1.sa.png" group-title="الترفيه والمسلسلات",MBC 1 HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://shahid.mbc.net/hls/mbc1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="MBCDrama.sa" tvg-name="MBCDrama.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/MBCDrama.sa.png" group-title="الترفيه والمسلسلات",MBC دراما HD
+https://stream.ecable.tv/mbc1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBC2.sa" tvg-name="MBC2.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBC2.sa.png" group-title="الأفلام والسينما",MBC 2 HD (أفلام أجنبية)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://shahid.mbc.net/hls/mbcdrama/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="DubaiTV.ae" tvg-name="DubaiTV.ae" tvg-logo="https://iptv-org.github.io/iptv/logos/DubaiTV.ae.png" group-title="الترفيه والمسلسلات",دبي TV HD
+https://stream.ecable.tv/mbc2/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBC4.sa" tvg-name="MBC4.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBC4.sa.png" group-title="الترفيه والمسلسلات",MBC 4 HD
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbc4/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBCAction.sa" tvg-name="MBCAction.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBCAction.sa.png" group-title="الأفلام والسينما",MBC Action HD (أكشن وإثارة)
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbcaction/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBCDrama.sa" tvg-name="MBCDrama.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBCDrama.sa.png" group-title="الترفيه والمسلسلات",MBC دراما HD
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbcdrama/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBCMAX.sa" tvg-name="MBCMAX.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBCMAX.sa.png" group-title="الأفلام والسينما",MBC Max HD (أفلام متواصلة)
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbcmax/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBCBollywood.sa" tvg-name="MBCBollywood.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBCBollywood.sa.png" group-title="الترفيه والمسلسلات",MBC بوليود HD
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbcbollywood/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBCMasr.eg" tvg-name="MBCMasr.eg" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBCMasr.eg.png" group-title="الترفيه والمسلسلات",MBC مصر HD
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbcmasr/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBCIraq.iq" tvg-name="MBCIraq.iq" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBCIraq.iq.png" group-title="الترفيه والمسلسلات",MBC العراق HD
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbciraq/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="DubaiTV.ae" tvg-name="DubaiTV.ae" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/DubaiTV.ae.png" group-title="الترفيه والمسلسلات",دبي TV HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 https://dmi.ae/dubaitv/dubaitv.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="SaudiTV1.sa" tvg-name="SaudiTV1.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/SaudiTV1.sa.png" group-title="الترفيه والمسلسلات",القناة السعودية الأولى HD
+#EXTINF:-1 tvg-id="SaudiTV1.sa" tvg-name="SaudiTV1.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/SaudiTV1.sa.png" group-title="الترفيه والمسلسلات",القناة السعودية الأولى HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://sbc.sa/hls/sauditv1.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="Spacetoon.ae" tvg-name="Spacetoon.ae" tvg-logo="https://iptv-org.github.io/iptv/logos/Spacetoon.ae.png" group-title="الأطفال والأسرة",سبيستون Spacetoon HD
+https://sauditv.akamaized.net/hls/live/2014078/saudi1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="MBC3.sa" tvg-name="MBC3.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBC3.sa.png" group-title="الأطفال والأسرة",MBC 3 HD (أطفال)
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/mbc3/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="Spacetoon.ae" tvg-name="Spacetoon.ae" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/Spacetoon.ae.png" group-title="الأطفال والأسرة",سبيستون Spacetoon HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 https://spacetoon.com/hls/live.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="MajidKidsTV.ae" tvg-name="MajidKidsTV.ae" tvg-logo="https://iptv-org.github.io/iptv/logos/MajidKidsTV.ae.png" group-title="الأطفال والأسرة",قناة ماجد للأطفال Majid Kids HD
+#EXTINF:-1 tvg-id="MajidKidsTV.ae" tvg-name="MajidKidsTV.ae" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MajidKidsTV.ae.png" group-title="الأطفال والأسرة",قناة ماجد للأطفال Majid Kids HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 https://admdn1.admedia.ae/ch2/majid/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-#EXTINF:-1 tvg-id="Baraem.qa" tvg-name="Baraem.qa" tvg-logo="https://iptv-org.github.io/iptv/logos/Baraem.qa.png" group-title="الأطفال والأسرة",براعم Baraem TV
+#EXTINF:-1 tvg-id="SaudiQuran.sa" tvg-name="SaudiQuran.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/SaudiQuran.sa.png" group-title="القرآن الكريم والسيَر",قناة القرآن الكريم مكة المكرمة HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://baraem.tv/hls/live.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="SaudiQuran.sa" tvg-name="SaudiQuran.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/SaudiQuran.sa.png" group-title="القرآن الكريم والسيَر",قناة القرآن الكريم مكة المكرمة HD
+https://sauditv.akamaized.net/hls/live/2014079/quran/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="SaudiSunnah.sa" tvg-name="SaudiSunnah.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/SaudiSunnah.sa.png" group-title="القرآن الكريم والسيَر",قناة السنة النبوية المدينة المنورة HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://sbc.sa/hls/quran.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="SaudiSunnah.sa" tvg-name="SaudiSunnah.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/SaudiSunnah.sa.png" group-title="القرآن الكريم والسيَر",قناة السنة النبوية المدينة المنورة HD
+https://sauditv.akamaized.net/hls/live/2014080/sunnah/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="RotanaCinema.sa" tvg-name="RotanaCinema.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/RotanaCinema.sa.png" group-title="الأفلام والسينما",روتانا سينما HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://sbc.sa/hls/sunnah.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="AlMajd.sa" tvg-name="AlMajd.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/AlMajd.sa.png" group-title="القرآن الكريم والسيَر",قناة المجد للقرآن الكريم HD
+https://stream.ecable.tv/rotanacinema/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="RotanaDrama.sa" tvg-name="RotanaDrama.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/RotanaDrama.sa.png" group-title="الأفلام والسينما",روتانا دراما HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://almajd.tv/hls/quran.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="RotanaCinema.sa" tvg-name="RotanaCinema.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/RotanaCinema.sa.png" group-title="الأفلام والسينما",روتانا سينما HD
+https://stream.ecable.tv/rotanadrama/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="RotanaClassic.sa" tvg-name="RotanaClassic.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/RotanaClassic.sa.png" group-title="الأفلام والسينما",روتانا كلاسيك HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://rotana-live.akamaized.net/hls/cinema/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-#EXTINF:-1 tvg-id="RotanaClassic.sa" tvg-name="RotanaClassic.sa" tvg-logo="https://iptv-org.github.io/iptv/logos/RotanaClassic.sa.png" group-title="الأفلام والسينما",روتانا كلاسيك HD
+https://stream.ecable.tv/rotanaclassic/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+#EXTINF:-1 tvg-id="RotanaClip.sa" tvg-name="RotanaClip.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/RotanaClip.sa.png" group-title="الترفيه والمسلسلات",روتانا كليب HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://rotana-live.akamaized.net/hls/classic/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://stream.ecable.tv/rotanaclip/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
