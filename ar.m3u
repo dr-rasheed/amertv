@@ -28,7 +28,7 @@ https://admdn1.admedia.ae/ch3/ngwild/playlist.m3u8|User-Agent=Mozilla/5.0 (Windo
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-https://amg00791-amg00791c1-samsunguk-uk-3475.playouts.now.amagi.tv/playlist/amg00791-nationalgeographicuk-samsunguk/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+http://213.91.179.28:8000/play/a0ct|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 #EXTINF:-1 tvg-id="NatGeoWild.us" tvg-name="NatGeoWild.us" tvg-logo="https://iptv-org.github.io/iptv/logos/NatGeoWild.us.png" group-title="الوثائقيات والمعرفة",Nat Geo Wild HD (English)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
@@ -38,7 +38,7 @@ https://amg00791-amg00791c2-samsunguk-uk-3476.playouts.now.amagi.tv/playlist/amg
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-https://admdn2.admedia.ae/ch2/quest/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+https://shd-amg-fast-btpls.shahid.net/tx002/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 #EXTINF:-1 tvg-id="AlJazeeraDocumentary.qa" tvg-name="AlJazeeraDocumentary.qa" tvg-logo="https://iptv-org.github.io/iptv/logos/AlJazeeraDocumentary.qa.png" group-title="الوثائقيات والمعرفة",الجزيرة الوثائقية HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
@@ -48,22 +48,22 @@ https://live-hls-web-ajd.getaj.net/AJD/index.m3u8|User-Agent=Mozilla/5.0 (Window
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+http://45.162.193.35/DOCU/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="CGTNDocumentary.cn" tvg-name="CGTNDocumentary.cn" tvg-logo="https://iptv-org.github.io/iptv/logos/CGTNDocumentary.cn.png" group-title="الوثائقيات والمعرفة",CGTN Documentary HD (English)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://livedoc.cgtn.com/500/prog_index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://amg00405-rakutentv-cgtn-rakuten-i9tar.amagi.tv/master.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="NASATVPublic.us" tvg-name="NASATVPublic.us" tvg-logo="https://iptv-org.github.io/iptv/logos/NASATVPublic.us.png" group-title="الوثائقيات والمعرفة",NASA TV Public HD (English)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://ntv1.akamaized.net/hls/live/2014075/NASA-TV1/master.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+http://45.171.108.253:8888/ATV/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="SmithsonianChannel.us" tvg-name="SmithsonianChannel.us" tvg-logo="https://iptv-org.github.io/iptv/logos/SmithsonianChannel.us.png" group-title="الوثائقيات والمعرفة",Smithsonian Channel HD (English)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-https://smithsonian-samsung.amagi.tv/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+https://streams.comclark.com/pknsd/anc/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 #EXTINF:-1 tvg-id="LoveNature.ca" tvg-name="LoveNature.ca" tvg-logo="https://iptv-org.github.io/iptv/logos/LoveNature.ca.png" group-title="الوثائقيات والمعرفة",Love Nature HD (English)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
@@ -73,7 +73,7 @@ https://lovenature-samsung-uk.amagi.tv/playlist.m3u8|User-Agent=Mozilla/5.0 (Win
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-https://wildearth-samsung-uk.amagi.tv/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+http://31.148.48.15/RT_HD/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 #EXTINF:-1 tvg-id="AlAraby2.qa" tvg-name="AlAraby2.qa" tvg-logo="https://iptv-org.github.io/iptv/logos/AlAraby2.qa.png" group-title="الوثائقيات والمعرفة",العربي 2 HD (وثائقيات وثقافة)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
@@ -108,12 +108,12 @@ https://vs-hls-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_arabic_
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://static.france24.com/live/F24_AR_HI_HLS/live_tv.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://streamvideol1.luxnet.ua/news24/smil:news24.stream.smil/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="TRTArabi.tr" tvg-name="TRTArabi.tr" tvg-logo="https://iptv-org.github.io/iptv/logos/TRTArabi.tr.png" group-title="الأخبار والمستجدات",TRT عربي HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://tv-trtarabi.medya.trt.com.tr/master.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+http://31.148.48.15/RT_HD/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="DWArabic.de" tvg-name="DWArabic.de" tvg-logo="https://iptv-org.github.io/iptv/logos/DWArabic.de.png" group-title="الأخبار والمستجدات",DW عربية HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
@@ -123,12 +123,12 @@ https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8|Use
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://rt-arabic.medialb.com/live/rtarabic/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+http://31.148.48.15/RT_HD/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="AbuDhabiSports1.ae" tvg-name="AbuDhabiSports1.ae" tvg-logo="https://iptv-org.github.io/iptv/logos/AbuDhabiSports1.ae.png" group-title="الرياضة",أبوظبي الرياضية 1 HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-https://admdn2.admedia.ae/ch1/adsports1/playlist.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+https://ott.columbus.te.ua/ternopil1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 #EXTINF:-1 tvg-id="AbuDhabiSports2.ae" tvg-name="AbuDhabiSports2.ae" tvg-logo="https://iptv-org.github.io/iptv/logos/AbuDhabiSports2.ae.png" group-title="الرياضة",أبوظبي الرياضية 2 HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
@@ -138,12 +138,12 @@ https://admdn1.admedia.ae/ch2/adsports2/playlist.m3u8|User-Agent=Mozilla/5.0 (Wi
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://dmi.ae/dubaisports/dubaisports1.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://ott.columbus.te.ua/ternopil1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="AlKass1.qa" tvg-name="AlKass1.qa" tvg-logo="https://iptv-org.github.io/iptv/logos/AlKass1.qa.png" group-title="الرياضة",قناة الكأس 1 HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://alkass.net/live/alkass1.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://ott.columbus.te.ua/ternopil1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="KuwaitTVSports.kw" tvg-name="KuwaitTVSports.kw" tvg-logo="https://iptv-org.github.io/iptv/logos/KuwaitTVSports.kw.png" group-title="الرياضة",الكويت الرياضية HD
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
@@ -158,7 +158,7 @@ https://part.gov.om/hls/omansports.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0;
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://stream.ecable.tv/mbc1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://ott.columbus.te.ua/ternopil1/index.m3u8|User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 #EXTINF:-1 tvg-id="MBC2.sa" tvg-name="MBC2.sa" tvg-logo="https://raw.githubusercontent.com/iptv-org/iptv/master/logos/MBC2.sa.png" group-title="الأفلام والسينما",MBC 2 HD (أفلام أجنبية)
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
