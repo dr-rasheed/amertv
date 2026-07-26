@@ -1,0 +1,6 @@
+{
+  "name": "مُولد وإدارة M3U & EPG لـ Kodi IPTV Simple Client",
+  "description": "تطبيق لإنشاء وتشغيل واختبار قوائم M3U والدليل الإلكتروني EPG للقنوات العربية وتقديم دليل ربطها مع Kodi بـ GitHub وروابط قصيرة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
